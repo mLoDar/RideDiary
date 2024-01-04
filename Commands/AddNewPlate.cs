@@ -1,8 +1,14 @@
-﻿namespace RideDiary.Commands
+﻿using System.Threading.Tasks;
+
+
+
+
+
+namespace RideDiary.Commands
 {
     internal class AddNewPlate
     {
-        internal static void Start()
+        internal static async Task Start()
         {
 
         }

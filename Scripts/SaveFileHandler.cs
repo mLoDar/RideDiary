@@ -38,7 +38,7 @@ namespace RideDiary.Scripts
 
             string jsonDataFromSaveFile = await File.ReadAllTextAsync(path_SaveFile);
 
-            if (ApplicationValues.AllWhitespaces().Replace(jsonDataFromSaveFile, string.Empty).Equals(string.Empty))
+            if (RegexPatterns.AllWhitespaces().Replace(jsonDataFromSaveFile, string.Empty).Equals(string.Empty))
             {
                 try
                 {

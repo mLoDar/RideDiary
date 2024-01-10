@@ -66,14 +66,14 @@ namespace RideDiary.Scripts
             Console.SetCursorPosition(0, 5);
         }
 
-        internal static async Task DisplayError(string errorMessage)
+        internal static async Task DisplayError(string errorMessage, int timeInSeconds = 3)
         {
             ResetConsole();
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(errorMessage);
 
-            await Task.Delay(3000);
+            await Task.Delay(timeInSeconds * 1000);
         }
 
         internal static void ClearLine()

@@ -35,9 +35,9 @@ namespace RideDiary.Commands
                 return;
             }
 
-            if (rideDiaryData.ContainsKey("plates") == false)
+            if (rideDiaryData.ContainsKey("numberPlates") == false)
             {
-                rideDiaryData["plates"] = new JArray();
+                rideDiaryData["numberPlates"] = new JArray();
             }
 
 
@@ -46,16 +46,16 @@ namespace RideDiary.Commands
 
 
 
-            JArray plates = rideDiaryData["plates"] as JArray ?? new();
+            JArray numberPlates = rideDiaryData["numberPlates"] as JArray ?? new();
 
-            if (plates.Count <= 0)
+            if (numberPlates.Count <= 0)
             {
                 await DisplayUI.DisplayError("                 No number plates have been added yet");
                 return;
             }
 
 
-            DisplayNumberPlates(plates);
+            DisplayNumberPlates(numberPlates);
 
 
 
@@ -72,7 +72,7 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.Cyan;
             string enteredNumber = Console.ReadLine() ?? string.Empty;
 
-            if (ValidNumberPlateSelection(enteredNumber, plates) == false)
+            if (ValidNumberPlateSelection(enteredNumber, numberPlates) == false)
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -84,7 +84,7 @@ namespace RideDiary.Commands
 
 
             int plateIndex = Convert.ToInt32(enteredNumber) - 1;
-            JObject selectedPlate = plates.ElementAtOrDefault(plateIndex) as JObject ?? new JObject();
+            JObject selectedPlate = numberPlates.ElementAtOrDefault(plateIndex) as JObject ?? new JObject();
             JProperty? plateProperty = selectedPlate.Properties().FirstOrDefault();
 
             if (plateProperty == null)
@@ -119,11 +119,11 @@ namespace RideDiary.Commands
             switch (pressedKey)
             {
                 case '1':
-                    selectedPlate = AddDataNewTrip(selectedPlate, plateProperty.Name);
+                    selectedPlate = AddNewTrip(selectedPlate, plateProperty.Name);
                     break;
 
                 case '2':
-                    selectedPlate = AddDataNewExpenses(selectedPlate, plateProperty.Name);
+                    selectedPlate = AddNewExpenses(selectedPlate, plateProperty.Name);
                     break;
 
                 case (char)ConsoleKey.Escape:
@@ -136,8 +136,8 @@ namespace RideDiary.Commands
 
 
 
-            plates[plateIndex] = selectedPlate;
-            rideDiaryData["plates"] = plates;
+            numberPlates[plateIndex] = selectedPlate;
+            rideDiaryData["numberPlates"] = numberPlates;
 
 
 
@@ -197,11 +197,11 @@ namespace RideDiary.Commands
             }
         }
 
-        private static void DisplayNumberPlates(JArray plates)
+        private static void DisplayNumberPlates(JArray numberPlates)
         {
-            for (int i = 0; i < plates.Count; i++)
+            for (int i = 0; i < numberPlates.Count; i++)
             {
-                JProperty? currentPlateProperty = (plates.ElementAt(i) as JObject ?? new JObject()).Properties().FirstOrDefault();
+                JProperty? currentPlateProperty = (numberPlates.ElementAt(i) as JObject ?? new JObject()).Properties().FirstOrDefault();
                 string numberPlate = currentPlateProperty?.Name ?? string.Empty;
 
                 Console.ForegroundColor = ConsoleColor.White;
@@ -212,7 +212,7 @@ namespace RideDiary.Commands
             }
         }
 
-        private static bool ValidNumberPlateSelection(string enteredNumber, JArray plates)
+        private static bool ValidNumberPlateSelection(string enteredNumber, JArray numberPlates)
         {
             if (RegexPatterns.AllWhitespaces().Replace(enteredNumber, string.Empty).Equals(string.Empty))
             {
@@ -224,7 +224,7 @@ namespace RideDiary.Commands
                 return false;
             }
 
-            if (Enumerable.Range(1, plates.Count).Contains(convertedNumber) == false)
+            if (Enumerable.Range(1, numberPlates.Count).Contains(convertedNumber) == false)
             {
                 return false;
             }
@@ -232,7 +232,7 @@ namespace RideDiary.Commands
             return true;
         }
 
-        private static JObject AddDataNewTrip(JObject plateToAddDataTo, string numberPlate)
+        private static JObject AddNewTrip(JObject plateToAddDataTo, string numberPlate)
         {
             Console.Title = "RideDiary | Add new trip to plate";
             DisplayUI.ResetConsole();
@@ -252,9 +252,9 @@ namespace RideDiary.Commands
             Console.Write("                 > ");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            string kilometers_Start = Console.ReadLine() ?? string.Empty;
+            string trip_KilometersStart = Console.ReadLine() ?? string.Empty;
 
-            if (int.TryParse(kilometers_Start, out _) == false)
+            if (int.TryParse(trip_KilometersStart, out _) == false)
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -272,9 +272,9 @@ namespace RideDiary.Commands
             Console.Write("                 > ");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            string kilometers_End = Console.ReadLine() ?? string.Empty;
+            string trip_KilometersEnd = Console.ReadLine() ?? string.Empty;
 
-            if (int.TryParse(kilometers_End, out int result) == false || result < Convert.ToInt32(kilometers_Start))
+            if (int.TryParse(trip_KilometersEnd, out int result) == false || result < Convert.ToInt32(trip_KilometersStart))
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -325,23 +325,23 @@ namespace RideDiary.Commands
 
 
 
-            JArray kilometerDiary = plateToAddDataTo[numberPlate]["Car_KilometerDiary"] as JArray ?? new JArray();
+            JArray collection_Trips = plateToAddDataTo[numberPlate]["Collection_Trips"] as JArray ?? new JArray();
 
-            kilometerDiary.Add(
+            collection_Trips.Add(
                 new JObject()
                 {
-                    ["Kilometers_Start"] = kilometers_Start,
-                    ["Kilometers_End"] = kilometers_End,
+                    ["Trip_KilometersStart"] = trip_KilometersStart,
+                    ["Trip_KilometersEnd"] = trip_KilometersEnd,
                     ["Trip_Date"] = trip_Date,
                     ["Trip_Description"] = trip_Description
                 }
             );
 
-            plateToAddDataTo[numberPlate]["Car_KilometerDiary"] = kilometerDiary;
+            plateToAddDataTo[numberPlate]["Collection_Trips"] = collection_Trips;
             return plateToAddDataTo;
         }
 
-        private static JObject AddDataNewExpenses(JObject plateToAddDataTo, string numberPlate)
+        private static JObject AddNewExpenses(JObject plateToAddDataTo, string numberPlate)
         {
             Console.Title = "RideDiary | Add new expenses to plate";
             DisplayUI.ResetConsole();
@@ -361,10 +361,10 @@ namespace RideDiary.Commands
             Console.Write("                 > ");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            string expenses_Amount = Console.ReadLine() ?? string.Empty;
-            expenses_Amount.Replace("€", string.Empty);
+            string expenses_AmountEuro = Console.ReadLine() ?? string.Empty;
+            expenses_AmountEuro.Replace("€", string.Empty);
 
-            if (decimal.TryParse(expenses_Amount, out _) == false)
+            if (decimal.TryParse(expenses_AmountEuro, out _) == false)
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -415,18 +415,18 @@ namespace RideDiary.Commands
 
 
 
-            JArray expensesDiary = plateToAddDataTo[numberPlate]?["Car_ExpensesDiary"] as JArray ?? new JArray();
+            JArray collection_Expenses = plateToAddDataTo[numberPlate]?["Collection_Expenses"] as JArray ?? new JArray();
 
-            expensesDiary.Add(
+            collection_Expenses.Add(
                 new JObject()
                 {
-                    ["Date"] = expenses_Date,
-                    ["AmountEur"] = expenses_Amount,
-                    ["Description"] = expenses_Description
+                    ["Expenses_Date"] = expenses_Date,
+                    ["Expenses_AmountEuro"] = expenses_AmountEuro,
+                    ["Expenses_Description"] = expenses_Description
                 }
             );
 
-            plateToAddDataTo[numberPlate]["Car_ExpensesDiary"] = expensesDiary;
+            plateToAddDataTo[numberPlate]["Collection_Expenses"] = collection_Expenses;
             return plateToAddDataTo;
         }
     }

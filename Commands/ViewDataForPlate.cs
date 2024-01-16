@@ -6,6 +6,8 @@ using RideDiary.Scripts;
 using RideDiary.Resources;
 
 using Newtonsoft.Json.Linq;
+using System.Threading;
+using System.Globalization;
 
 
 
@@ -410,9 +412,146 @@ namespace RideDiary.Commands
             }
         }
 
-        private static void DisplayData_Expenses(JArray plate_Expenses)
+        private static async void DisplayData_Expenses(JArray plate_Expenses)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            int expensesPerPage = 15;
 
+            int arraySizeHelper = (int)Math.Ceiling(Convert.ToDecimal(plate_Expenses.Count) / expensesPerPage);
+            string[,] expense_Pages = new string[arraySizeHelper, expensesPerPage];
+
+
+
+            int arrayHelperX = 0;
+            int arrayHelperY = 0;
+
+            int lengthHelper = plate_Expenses
+                .Select(obj => Convert.ToDecimal(obj["Expenses_AmountEuro"].ToString().Replace('.',',')))
+                .Select(number => number.ToString().Length)
+                .Max();
+
+
+
+            foreach (JObject expense in plate_Expenses.Cast<JObject>())
+            {
+                decimal.TryParse(Convert.ToString(expense["Expenses_AmountEuro"]).Replace(',','.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal expense_AmountEuro);
+                string expense_Formatted = string.Format("{0:F2}", expense_AmountEuro);
+
+                string expense_CombinedInformation = $"{expense["Expenses_Date"]} | {expense_Formatted.PadLeft(lengthHelper)} € | {expense["Expenses_Description"]}";
+
+                expense_Pages[arrayHelperY, arrayHelperX] = expense_CombinedInformation;
+
+                arrayHelperX++;
+
+                if (arrayHelperX >= expensesPerPage)
+                {
+                    arrayHelperY++;
+                    arrayHelperX = 0;
+                }
+            }
+
+
+
+            int currentPageIndex = 0;
+
+
+
+        LabelDisplayPage:
+
+            DisplayUI.ResetConsole();
+            Console.ForegroundColor = ConsoleColor.White;
+
+            for (int i = 0; i < expense_Pages.GetLength(1); i++)
+            {
+                string singleExpense = expense_Pages[currentPageIndex, i];
+
+                if (singleExpense != null && singleExpense.Equals(string.Empty) == false)
+                {
+                    string[] splittedInfo = singleExpense.Split('|');
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($"                 {splittedInfo[0]}");
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("|");
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($"{splittedInfo[1]}");
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("|");
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine($"{splittedInfo[2]}");
+                }
+            }
+
+            Console.WriteLine($"                 ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"                 ______________________");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            if (currentPageIndex - 1 >= 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write($"                 <-");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write($" previuos page   ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"(A)");
+            }
+
+            if (currentPageIndex + 1 <= expense_Pages.GetLength(0) - 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write($"                 (D)");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write($"       next page ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"->");
+            }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"                 __________");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"                 [ESC] Exit");
+            Console.WriteLine("                 ");
+            Console.Write("                 > ");
+
+
+
+        LabelKeyRead:
+
+            char pressedKey = Console.ReadKey(true).KeyChar;
+
+            switch (pressedKey)
+            {
+                case 'a':
+
+                    if (currentPageIndex - 1 < 0)
+                    {
+                        goto LabelKeyRead;
+                    }
+
+                    currentPageIndex--;
+                    goto LabelDisplayPage;
+
+                case 'd':
+
+                    if (currentPageIndex + 1 > expense_Pages.GetLength(0) - 1)
+                    {
+                        goto LabelKeyRead;
+                    }
+
+                    currentPageIndex++;
+                    goto LabelDisplayPage;
+
+                case (char)ConsoleKey.Escape:
+                    return;
+
+                default:
+                    goto LabelKeyRead;
+            }
         }
     }
 }

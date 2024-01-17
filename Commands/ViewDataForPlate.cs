@@ -58,7 +58,7 @@ namespace RideDiary.Commands
 
 
 
-            DisplayNumberPlates(numberPlates);
+            NumberPlateExtras.DisplayNumberPlates(numberPlates);
 
 
 
@@ -75,7 +75,7 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.Cyan;
             string enteredNumber = Console.ReadLine() ?? string.Empty;
 
-            if (ValidNumberPlateSelection(enteredNumber, numberPlates) == false)
+            if (NumberPlateExtras.ValidNumberPlateSelected(enteredNumber, numberPlates) == false)
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -183,41 +183,6 @@ namespace RideDiary.Commands
             {
 
             }
-        }
-
-        private static void DisplayNumberPlates(JArray numberPlates)
-        {
-            for (int i = 0; i < numberPlates.Count; i++)
-            {
-                JProperty? currentPlateProperty = (numberPlates.ElementAt(i) as JObject ?? new JObject()).Properties().FirstOrDefault();
-                string numberPlate = currentPlateProperty?.Name ?? string.Empty;
-
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write($"                 [{i + 1}] ");
-
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"{numberPlate}");
-            }
-        }
-
-        private static bool ValidNumberPlateSelection(string enteredNumber, JArray numberPlates)
-        {
-            if (RegexPatterns.AllWhitespaces().Replace(enteredNumber, string.Empty).Equals(string.Empty))
-            {
-                return false;
-            }
-
-            if (int.TryParse(enteredNumber, out int convertedNumber) == false)
-            {
-                return false;
-            }
-
-            if (Enumerable.Range(1, numberPlates.Count).Contains(convertedNumber) == false)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         private static void DisplayData_Main(JProperty plateProperty, JToken car_Maker, JToken car_Model, JArray plate_Trips, JArray plate_Expenses)
@@ -434,7 +399,7 @@ namespace RideDiary.Commands
             int lengthHelper = plate_Expenses
                 .Select(obj => Convert.ToDecimal(obj["Expenses_AmountEuro"].ToString().Replace('.',',')))
                 .Select(number => number.ToString().Length)
-            .Max();
+                .Max();
 
 
 

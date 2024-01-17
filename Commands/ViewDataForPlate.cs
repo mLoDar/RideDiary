@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Globalization;
 using System.Threading.Tasks;
 
 using RideDiary.Scripts;
 using RideDiary.Resources;
 
 using Newtonsoft.Json.Linq;
-using System.Threading;
-using System.Globalization;
 
 
 
@@ -26,7 +25,8 @@ namespace RideDiary.Commands
         internal static async Task Start()
         {
         LabelMethodBeginnging:
-            Console.Title = "RideDiary | Add data to plate";
+
+            Console.Title = "RideDiary | Displaying data of plate";
             DisplayUI.ResetConsole();
 
             LoadDataFromFile();
@@ -55,6 +55,7 @@ namespace RideDiary.Commands
                 await DisplayUI.DisplayError("                 No number plates have been added yet");
                 return;
             }
+
 
 
             DisplayNumberPlates(numberPlates);
@@ -221,6 +222,7 @@ namespace RideDiary.Commands
 
         private static void DisplayData_Main(JProperty plateProperty, JToken car_Maker, JToken car_Model, JArray plate_Trips, JArray plate_Expenses)
         {
+            Console.Title = $"RideDiary | Data of {plateProperty.Name}";
             DisplayUI.ResetConsole();
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -289,6 +291,10 @@ namespace RideDiary.Commands
 
 
 
+            plate_Trips = new JArray(plate_Trips.OrderByDescending(obj => DateTime.Parse(obj["Trip_Date"].ToString())));
+
+
+
             foreach (JObject trip in plate_Trips.Cast<JObject>())
             {
                 int trip_KilometersStart = Convert.ToInt32(trip["Trip_KilometersStart"]);
@@ -316,6 +322,7 @@ namespace RideDiary.Commands
             
         LabelDisplayPage:
 
+            Console.Title = "RideDiary | Displaying trip data";
             DisplayUI.ResetConsole();
             Console.ForegroundColor = ConsoleColor.White;
 
@@ -331,13 +338,13 @@ namespace RideDiary.Commands
                     Console.Write($"                 {splittedInfo[0]}");
 
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("|");
+                    Console.Write(" | ");
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.Write($"{splittedInfo[1]}");
 
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("|");
+                    Console.Write(" | ");
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"{splittedInfo[2]}");
@@ -412,9 +419,8 @@ namespace RideDiary.Commands
             }
         }
 
-        private static async void DisplayData_Expenses(JArray plate_Expenses)
+        private static void DisplayData_Expenses(JArray plate_Expenses)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
             int expensesPerPage = 15;
 
             int arraySizeHelper = (int)Math.Ceiling(Convert.ToDecimal(plate_Expenses.Count) / expensesPerPage);
@@ -428,7 +434,11 @@ namespace RideDiary.Commands
             int lengthHelper = plate_Expenses
                 .Select(obj => Convert.ToDecimal(obj["Expenses_AmountEuro"].ToString().Replace('.',',')))
                 .Select(number => number.ToString().Length)
-                .Max();
+            .Max();
+
+
+
+            plate_Expenses = new JArray(plate_Expenses.OrderByDescending(obj => DateTime.Parse(obj["Expenses_Date"].ToString())));
 
 
 
@@ -458,6 +468,7 @@ namespace RideDiary.Commands
 
         LabelDisplayPage:
 
+            Console.Title = "RideDiary | Displaying expenses data";
             DisplayUI.ResetConsole();
             Console.ForegroundColor = ConsoleColor.White;
 
@@ -473,13 +484,13 @@ namespace RideDiary.Commands
                     Console.Write($"                 {splittedInfo[0]}");
 
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("|");
+                    Console.Write(" | ");
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.Write($"{splittedInfo[1]}");
 
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("|");
+                    Console.Write(" | ");
 
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"{splittedInfo[2]}");

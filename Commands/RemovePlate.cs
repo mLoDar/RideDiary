@@ -61,14 +61,14 @@ namespace RideDiary.Commands
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"                 ");
-            Console.WriteLine($"                 Enter the number of the plate to remove");
+            Console.WriteLine("                 ");
+            Console.WriteLine("                 Enter the number of the plate to remove");
 
 
 
         LabelNumberInput:
 
-            Console.Write($"                 > ");
+            Console.Write("                 > ");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             string enteredNumber = Console.ReadLine() ?? string.Empty;
@@ -192,31 +192,31 @@ namespace RideDiary.Commands
             string plate_Model = $"{plateToRemove?[plate_Name]?["Car_Model"]}";
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"                 Number plate: ");
+            Console.Write("                 Number plate: ");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"'{plate_Name}'");
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"                 Car maker: ");
+            Console.Write("                 Car maker: ");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"'{plate_Maker}'");
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"                 Car model: ");
+            Console.Write("                 Car model: ");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"'{plate_Model}'");
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"                 ");
-            Console.Write($"                 Are you sure you want to ");
+            Console.WriteLine("                 ");
+            Console.Write("                 Are you sure you want to ");
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write($"REMOVE");
+            Console.Write("REMOVE");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($" the selected plate?");
+            Console.WriteLine(" the selected plate?");
 
-            Console.WriteLine($"                 ");
-            Console.Write($"                 > (y/n): ");
+            Console.WriteLine("                 ");
+            Console.Write("                 > (y/n): ");
         }
     }
 }

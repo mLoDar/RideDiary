@@ -141,9 +141,21 @@ namespace RideDiary.Commands
 
             DisplayUI.ResetConsole();
 
+
+
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("                 Successfully removed the selected plate");
-            await Task.Delay(3000);
+            Console.WriteLine("                  ___________________________________________");
+            Console.WriteLine("                 |                                           |");
+            Console.Write("                 |  ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("Successfully removed the selected plate");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("  |");
+            Console.WriteLine("                 |___________________________________________|");
+
+
+
+            await Task.Delay(2000);
         }
 
         private static void LoadDataFromFile()

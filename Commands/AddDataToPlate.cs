@@ -55,6 +55,7 @@ namespace RideDiary.Commands
             }
 
 
+
             NumberPlateExtras.DisplayNumberPlates(numberPlates);
 
 
@@ -112,6 +113,7 @@ namespace RideDiary.Commands
             Console.Write("                 > ");
 
 
+
         LabelKeyRead:
 
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -157,6 +159,8 @@ namespace RideDiary.Commands
 
 
             DisplayUI.ResetConsole();
+
+
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("                  _________________________________________________");
@@ -230,7 +234,9 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter the kilometer reading at the beginning of the trip");
+
         LabelReadKilometersStart:
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 
@@ -250,7 +256,9 @@ namespace RideDiary.Commands
             
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter the kilometer reading at the end of the trip");
+
         LabelReadKilometersEnd:
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 
@@ -270,7 +278,9 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter the date of the trip (format: day.month.year)");
+
         LabelReadDate:
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 
@@ -290,7 +300,9 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter description for the trip");
+
         LabelReadDescription:
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 
@@ -339,7 +351,9 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter the amount paid in Euro");
+
         LabelReadEuro:
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 
@@ -360,7 +374,9 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter the date of the refuel (format: day.month.year)");
+
         LabelReadDate:
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 
@@ -380,7 +396,9 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter the amount of liters of fuel");
+
         LabelReadLiters:
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 
@@ -428,7 +446,9 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter the amount of the expense in Euro");
+
         LabelReadEuro:
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 
@@ -449,7 +469,9 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter the date of the expenses (format: day.month.year)");
+
         LabelReadDate:
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 
@@ -469,7 +491,9 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter a description for the expenses");
+
         LabelReadDescription:
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 

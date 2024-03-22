@@ -37,9 +37,9 @@ namespace RideDiary.Commands
                 return;
             }
 
-            if (rideDiaryData.ContainsKey("numberPlates") == false)
+            if (rideDiaryData.ContainsKey("NumberPlates") == false)
             {
-                rideDiaryData["numberPlates"] = new JArray();
+                rideDiaryData["NumberPlates"] = new JArray();
             }
 
 
@@ -48,7 +48,7 @@ namespace RideDiary.Commands
 
 
 
-            JArray numberPlates = rideDiaryData["numberPlates"] as JArray ?? new();
+            JArray numberPlates = rideDiaryData["NumberPlates"] as JArray ?? new();
 
             if (numberPlates.Count <= 0)
             {
@@ -420,12 +420,12 @@ namespace RideDiary.Commands
             int arrayHelperY = 0;
 
             int lengthHelperEuro = plate_Refuels
-                .Select(obj => Convert.ToDecimal(obj["Refuel_AmountEuro"].ToString().Replace('.', ',')))
+                .Select(obj => Convert.ToDecimal(obj["Refuel_PaidInEuro"].ToString().Replace('.', ',')))
                 .Select(number => number.ToString().Length)
                 .Max();
 
             int lengthHelperLiter = plate_Refuels
-                .Select(obj => Convert.ToDecimal(obj["Refuel_Liter"].ToString().Replace('.', ',')))
+                .Select(obj => Convert.ToDecimal(obj["Refuel_AmountAsLiter"].ToString().Replace('.', ',')))
                 .Select(number => number.ToString().Length)
                 .Max();
 
@@ -436,10 +436,10 @@ namespace RideDiary.Commands
 
             foreach (JObject refuel in plate_Refuels.Cast<JObject>())
             {
-                decimal.TryParse(Convert.ToString(refuel["Refuel_AmountEuro"]).Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuel_AmountEuro);
+                decimal.TryParse(Convert.ToString(refuel["Refuel_PaidInEuro"]).Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuel_AmountEuro);
                 string refuelEuro_Formatted = string.Format("{0:F2}", refuel_AmountEuro);
 
-                decimal.TryParse(Convert.ToString(refuel["Refuel_Liter"]).Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuel_Liter);
+                decimal.TryParse(Convert.ToString(refuel["Refuel_AmountAsLiter"]).Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuel_Liter);
                 string refuelLiter_Formatted = string.Format("{0:F2}", refuel_Liter);
 
                 string refuel_CombinedInformation = $"{refuel["Refuel_Date"]} | {refuelEuro_Formatted.PadRight(lengthHelperEuro)} € | {refuelLiter_Formatted.PadRight(lengthHelperEuro)} Liters";
@@ -581,22 +581,22 @@ namespace RideDiary.Commands
             int arrayHelperY = 0;
 
             int lengthHelper = plate_Expenses
-                .Select(obj => Convert.ToDecimal(obj["Expenses_AmountEuro"].ToString().Replace('.',',')))
+                .Select(obj => Convert.ToDecimal(obj["Expense_PaidInEuro"].ToString().Replace('.',',')))
                 .Select(number => number.ToString().Length)
                 .Max();
 
 
 
-            plate_Expenses = new JArray(plate_Expenses.OrderByDescending(obj => DateTime.Parse(obj["Expenses_Date"].ToString())));
+            plate_Expenses = new JArray(plate_Expenses.OrderByDescending(obj => DateTime.Parse(obj["Expense_Date"].ToString())));
 
 
 
             foreach (JObject expense in plate_Expenses.Cast<JObject>())
             {
-                decimal.TryParse(Convert.ToString(expense["Expenses_AmountEuro"]).Replace(',','.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal expense_AmountEuro);
+                decimal.TryParse(Convert.ToString(expense["Expense_PaidInEuro"]).Replace(',','.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal expense_AmountEuro);
                 string expense_Formatted = string.Format("{0:F2}", expense_AmountEuro);
 
-                string expense_CombinedInformation = $"{expense["Expenses_Date"]} | {expense_Formatted.PadLeft(lengthHelper)} € | {expense["Expenses_Description"]}";
+                string expense_CombinedInformation = $"{expense["Expense_Date"]} | {expense_Formatted.PadLeft(lengthHelper)} € | {expense["Expense_Description"]}";
 
                 expense_Pages[arrayHelperY, arrayHelperX] = expense_CombinedInformation;
 

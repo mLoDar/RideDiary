@@ -36,9 +36,9 @@ namespace RideDiary.Commands
                 return;
             }
 
-            if (rideDiaryData.ContainsKey("numberPlates") == false)
+            if (rideDiaryData.ContainsKey("NumberPlates") == false)
             {
-                rideDiaryData["numberPlates"] = new JArray();
+                rideDiaryData["NumberPlates"] = new JArray();
             }
 
 
@@ -47,7 +47,7 @@ namespace RideDiary.Commands
 
 
 
-            JArray numberPlates = rideDiaryData["numberPlates"] as JArray ?? new();
+            JArray numberPlates = rideDiaryData["NumberPlates"] as JArray ?? new();
 
             if (numberPlates.Count <= 0)
             {
@@ -125,7 +125,7 @@ namespace RideDiary.Commands
 
 
             numberPlates.ElementAtOrDefault(plateIndex)?.Remove();
-            rideDiaryData["numberPlates"] = numberPlates;
+            rideDiaryData["NumberPlates"] = numberPlates;
 
 
 

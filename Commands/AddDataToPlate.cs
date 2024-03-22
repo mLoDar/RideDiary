@@ -35,9 +35,9 @@ namespace RideDiary.Commands
                 return;
             }
 
-            if (rideDiaryData.ContainsKey("numberPlates") == false)
+            if (rideDiaryData.ContainsKey("NumberPlates") == false)
             {
-                rideDiaryData["numberPlates"] = new JArray();
+                rideDiaryData["NumberPlates"] = new JArray();
             }
 
 
@@ -46,7 +46,7 @@ namespace RideDiary.Commands
 
 
 
-            JArray numberPlates = rideDiaryData["numberPlates"] as JArray ?? new();
+            JArray numberPlates = rideDiaryData["NumberPlates"] as JArray ?? new();
 
             if (numberPlates.Count <= 0)
             {
@@ -144,7 +144,7 @@ namespace RideDiary.Commands
 
 
             numberPlates[plateIndex] = selectedPlate;
-            rideDiaryData["numberPlates"] = numberPlates;
+            rideDiaryData["NumberPlates"] = numberPlates;
 
 
 
@@ -232,6 +232,29 @@ namespace RideDiary.Commands
             Console.WriteLine("                 ");
 
 
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("                 Enter the date of the trip (format: day.month.year)");
+
+        LabelReadDate:
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("                 > ");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            string trip_Date = Console.ReadLine() ?? string.Empty;
+
+            if (DateTime.TryParseExact(trip_Date, "dd.MM.yyyy", null, DateTimeStyles.None, out _) == false)
+            {
+                Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+
+                DisplayUI.ClearLine();
+
+                goto LabelReadDate;
+            }
+
+
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter the kilometer reading at the beginning of the trip");
 
@@ -277,28 +300,6 @@ namespace RideDiary.Commands
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("                 Enter the date of the trip (format: day.month.year)");
-
-        LabelReadDate:
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("                 > ");
-
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            string trip_Date = Console.ReadLine() ?? string.Empty;
-
-            if (DateTime.TryParseExact(trip_Date, "dd.MM.yyyy", null, DateTimeStyles.None, out _) == false)
-            {
-                Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
-
-                DisplayUI.ClearLine();
-
-                goto LabelReadDate;
-            }
-
-
-
-            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter description for the trip");
 
         LabelReadDescription:
@@ -325,9 +326,9 @@ namespace RideDiary.Commands
             collection_Trips.Add(
                 new JObject()
                 {
+                    ["Trip_Date"] = trip_Date,
                     ["Trip_KilometersStart"] = parsed_KilometersStart,
                     ["Trip_KilometersEnd"] = parsed_KilometersEnd,
-                    ["Trip_Date"] = trip_Date,
                     ["Trip_Description"] = trip_Description
                 }
             );
@@ -422,8 +423,8 @@ namespace RideDiary.Commands
                 new JObject()
                 {
                     ["Refuel_Date"] = refuel_Date,
-                    ["Refuel_AmountEuro"] = parsed_AmountEuro,
-                    ["Refuel_Liter"] = parsed_Liters
+                    ["Refuel_PaidInEuro"] = parsed_AmountEuro,
+                    ["Refuel_AmountAsLiter"] = parsed_Liters
                 }
             );
 
@@ -516,9 +517,9 @@ namespace RideDiary.Commands
             collection_Expenses.Add(
                 new JObject()
                 {
-                    ["Expenses_Date"] = expenses_Date,
-                    ["Expenses_AmountEuro"] = parsed_AmountEuro,
-                    ["Expenses_Description"] = expenses_Description
+                    ["Expense_Date"] = expenses_Date,
+                    ["Expense_PaidInEuro"] = parsed_AmountEuro,
+                    ["Expense_Description"] = expenses_Description
                 }
             );
 

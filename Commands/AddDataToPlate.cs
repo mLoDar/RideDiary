@@ -108,7 +108,7 @@ namespace RideDiary.Commands
             Console.WriteLine("                 ");
             Console.WriteLine("                 [1] New trip");
             Console.WriteLine("                 [2] New refuel");
-            Console.WriteLine("                 [3] New expenses");
+            Console.WriteLine("                 [3] New expense");
             Console.WriteLine("                 ");
             Console.Write("                 > ");
 
@@ -233,8 +233,12 @@ namespace RideDiary.Commands
 
 
 
+            string currentDate = DateTime.Now.ToShortDateString().Replace("/", ".");
+
+
+
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("                 Enter the date of the trip (format: day.month.year)");
+            Console.WriteLine($"                 Enter the date of the trip (day.month.year | e.g. {currentDate})");
 
         LabelReadDate:
 
@@ -300,7 +304,7 @@ namespace RideDiary.Commands
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("                 Enter description for the trip");
+            Console.WriteLine("                 Enter a description for the trip");
 
         LabelReadDescription:
 
@@ -321,7 +325,7 @@ namespace RideDiary.Commands
 
 
 
-            JArray collection_Trips = plateToAddDataTo[numberPlate]["Collection_Trips"] as JArray ?? new JArray();
+            JArray collection_Trips = plateToAddDataTo[numberPlate]?["Collection_Trips"] as JArray ?? new JArray();
 
             collection_Trips.Add(
                 new JObject()
@@ -333,7 +337,10 @@ namespace RideDiary.Commands
                 }
             );
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             plateToAddDataTo[numberPlate]["Collection_Trips"] = collection_Trips;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
             return plateToAddDataTo;
         }
 
@@ -348,6 +355,33 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("                 _________________");
             Console.WriteLine("                 ");
+
+
+
+            string currentDate = DateTime.Now.ToShortDateString().Replace("/", ".");
+
+
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"                 Enter the date of the refuel (day.month.year | e.g. {currentDate})");
+
+        LabelReadDate:
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("                 > ");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            string refuel_Date = Console.ReadLine() ?? string.Empty;
+
+            if (DateTime.TryParseExact(refuel_Date, "dd.MM.yyyy", null, DateTimeStyles.None, out _) == false)
+            {
+                Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+
+                DisplayUI.ClearLine();
+
+                goto LabelReadDate;
+            }
+
 
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -369,28 +403,6 @@ namespace RideDiary.Commands
                 DisplayUI.ClearLine();
 
                 goto LabelReadEuro;
-            }
-
-
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("                 Enter the date of the refuel (format: day.month.year)");
-
-        LabelReadDate:
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("                 > ");
-
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            string refuel_Date = Console.ReadLine() ?? string.Empty;
-
-            if (DateTime.TryParseExact(refuel_Date, "dd.MM.yyyy", null, DateTimeStyles.None, out _) == false)
-            {
-                Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
-
-                DisplayUI.ClearLine();
-
-                goto LabelReadDate;
             }
 
 
@@ -428,7 +440,10 @@ namespace RideDiary.Commands
                 }
             );
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             plateToAddDataTo[numberPlate]["Collection_Refuels"] = collection_Expenses;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
             return plateToAddDataTo;
         }
 
@@ -443,6 +458,33 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("                 _________________");
             Console.WriteLine("                 ");
+
+
+
+            string currentDate = DateTime.Now.ToShortDateString().Replace("/", ".");
+
+
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"                 Enter the date of the expense (day.month.year | e.g. {currentDate})");
+
+        LabelReadDate:
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("                 > ");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            string expenses_Date = Console.ReadLine() ?? string.Empty;
+
+            if (DateTime.TryParseExact(expenses_Date, "dd.MM.yyyy", null, DateTimeStyles.None, out _) == false)
+            {
+                Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+
+                DisplayUI.ClearLine();
+
+                goto LabelReadDate;
+            }
+
 
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -469,29 +511,7 @@ namespace RideDiary.Commands
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("                 Enter the date of the expenses (format: day.month.year)");
-
-        LabelReadDate:
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("                 > ");
-
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            string expenses_Date = Console.ReadLine() ?? string.Empty;
-
-            if (DateTime.TryParseExact(expenses_Date, "dd.MM.yyyy", null, DateTimeStyles.None, out _) == false)
-            {
-                Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
-
-                DisplayUI.ClearLine();
-
-                goto LabelReadDate;
-            }
-
-
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("                 Enter a description for the expenses");
+            Console.WriteLine("                 Enter a description for the expense");
 
         LabelReadDescription:
 
@@ -523,7 +543,10 @@ namespace RideDiary.Commands
                 }
             );
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             plateToAddDataTo[numberPlate]["Collection_Expenses"] = collection_Expenses;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
             return plateToAddDataTo;
         }
     }

@@ -343,7 +343,7 @@ namespace RideDiary.Commands
 
         private static JObject AddNewExpenses(JObject plateToAddDataTo, string numberPlate)
         {
-            Console.Title = "RideDiary | Add new expenses to plate";
+            Console.Title = "RideDiary | Add new expense to plate";
             DisplayUI.ResetConsole();
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -355,14 +355,14 @@ namespace RideDiary.Commands
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("                 Enter the amount of the expenses in Euro");
+            Console.WriteLine("                 Enter the amount of the expense in Euro");
         LabelReadKilometersStart:
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             string expenses_AmountEuro = Console.ReadLine() ?? string.Empty;
-            expenses_AmountEuro.Replace("€", string.Empty);
+            expenses_AmountEuro = expenses_AmountEuro.Replace("€", string.Empty);
 
             if (decimal.TryParse(expenses_AmountEuro, out _) == false)
             {

@@ -14,6 +14,10 @@ namespace RideDiary
     {
         internal static async Task Main()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+
+
         LabelMethodBeginning:
 
             Console.Title = "RideDiary | Root";

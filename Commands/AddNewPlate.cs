@@ -34,9 +34,9 @@ namespace RideDiary.Commands
                 return;
             }
 
-            if (rideDiaryData.ContainsKey("plates") == false)
+            if (rideDiaryData.ContainsKey("numberPlates") == false)
             {
-                rideDiaryData["plates"] = new JArray();
+                rideDiaryData["numberPlates"] = new JArray();
             }
 
 
@@ -57,17 +57,17 @@ namespace RideDiary.Commands
                 {
                     ["Car_Maker"] = car_Maker,
                     ["Car_Model"] = car_Model,
-                    ["Car_KilometerDiary"] = new JArray(),
-                    ["Car_ExpensesDiary"] = new JArray()
+                    ["Collection_Trips"] = new JArray(),
+                    ["Collection_Expenses"] = new JArray()
                 }
             };
 
 
 
-            JArray plates = (rideDiaryData["plates"] as JArray) ?? new JArray();
-            plates.Add(newPlate);
+            JArray numberPlates = (rideDiaryData["numberPlates"] as JArray) ?? new JArray();
+            numberPlates.Add(newPlate);
 
-            rideDiaryData["plates"] = plates;
+            rideDiaryData["numberPlates"] = numberPlates;
 
 
 
@@ -161,9 +161,9 @@ namespace RideDiary.Commands
 
 
 
-            JArray plates = rideDiaryData["plates"] as JArray ?? new JArray();
+            JArray numberPlates = rideDiaryData["numberPlates"] as JArray ?? new JArray();
 
-            foreach (JObject plate in plates.Cast<JObject>())
+            foreach (JObject plate in numberPlates.Cast<JObject>())
             {
                 if (plate.ContainsKey(car_Plate))
                 {

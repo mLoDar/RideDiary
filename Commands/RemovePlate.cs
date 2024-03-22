@@ -45,6 +45,8 @@ namespace RideDiary.Commands
 
             DisplayUI.ResetConsole();
 
+
+
             JArray plates = rideDiaryData["plates"] as JArray ?? new();
 
             if (plates.Count <= 0)
@@ -54,18 +56,9 @@ namespace RideDiary.Commands
             }
 
 
+            DisplayNumberPlates(plates);
+            
 
-            for (int i = 0; i < plates.Count; i++)
-            {
-                JProperty? currentPlateProperty = (plates.ElementAt(i) as JObject ?? new JObject()).Properties().FirstOrDefault();
-                string numberPlate = currentPlateProperty?.Name ?? string.Empty;
-
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write($"                 [{i + 1}] ");
-
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"{numberPlate}");
-            }
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"                 ");
@@ -106,39 +99,8 @@ namespace RideDiary.Commands
             DisplayUI.ResetConsole();
 
 
-            
-            string plate_Name = plateProperty.Name;
-            string plate_Maker = $"{plateToRemove?[plate_Name]?["Car_Maker"]}";
-            string plate_Model = $"{plateToRemove?[plate_Name]?["Car_Model"]}";
 
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"                 Number plate: ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"'{plate_Name}'");
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"                 Car maker: ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"'{plate_Maker}'");
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"                 Car model: ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"'{plate_Model}'");
-
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"                 ");
-            Console.Write($"                 Are you sure you want to ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write($"REMOVE");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($" the selected plate?");
-
-            Console.WriteLine($"                 ");
-            Console.Write($"                 > (y/n): ");
-
-
+            DisplayConfirmationMenu(plateToRemove, plateProperty);
 
         LabelKeyRead:
 
@@ -241,6 +203,55 @@ namespace RideDiary.Commands
             }
 
             return true;
+        }
+
+        private static void DisplayNumberPlates(JArray plates)
+        {
+            for (int i = 0; i < plates.Count; i++)
+            {
+                JProperty? currentPlateProperty = (plates.ElementAt(i) as JObject ?? new JObject()).Properties().FirstOrDefault();
+                string numberPlate = currentPlateProperty?.Name ?? string.Empty;
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write($"                 [{i + 1}] ");
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"{numberPlate}");
+            }
+        }
+
+        private static void DisplayConfirmationMenu(JObject plateToRemove, JProperty plateProperty)
+        {
+            string plate_Name = plateProperty.Name;
+            string plate_Maker = $"{plateToRemove?[plate_Name]?["Car_Maker"]}";
+            string plate_Model = $"{plateToRemove?[plate_Name]?["Car_Model"]}";
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write($"                 Number plate: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"'{plate_Name}'");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write($"                 Car maker: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"'{plate_Maker}'");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write($"                 Car model: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"'{plate_Model}'");
+
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"                 ");
+            Console.Write($"                 Are you sure you want to ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write($"REMOVE");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($" the selected plate?");
+
+            Console.WriteLine($"                 ");
+            Console.Write($"                 > (y/n): ");
         }
     }
 }

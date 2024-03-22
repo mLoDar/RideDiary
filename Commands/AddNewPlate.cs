@@ -30,7 +30,7 @@ namespace RideDiary.Commands
 
             if (rideDiaryData.ContainsKey("error"))
             {
-                await DisplayUI.DisplayError($"{rideDiaryData["error"]}");
+                await DisplayUI.DisplayError($"                 {rideDiaryData["error"]}");
                 return;
             }
 
@@ -75,7 +75,7 @@ namespace RideDiary.Commands
 
             if (result.ContainsKey("error"))
             {
-                await DisplayUI.DisplayError($"{result["error"]}");
+                await DisplayUI.DisplayError($"                 {result["error"]}");
                 return;
             }
 
@@ -129,7 +129,7 @@ namespace RideDiary.Commands
 
         private static string ReadCarPlate()
         {
-        MethodBeginning:
+        LabelMethodBeginning:
 
             DisplayUI.ResetConsole();
 
@@ -156,7 +156,7 @@ namespace RideDiary.Commands
 
                 DisplayUI.ClearLine();
 
-                goto MethodBeginning;
+                goto LabelMethodBeginning;
             }
 
 
@@ -173,7 +173,7 @@ namespace RideDiary.Commands
 
                     DisplayUI.ClearLine();
 
-                    goto MethodBeginning;
+                    goto LabelMethodBeginning;
                 }
             }
 
@@ -184,7 +184,7 @@ namespace RideDiary.Commands
 
         private static string ReadCarMaker()
         {
-        MethodBeginning:
+        LabelMethodBeginning:
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 Enter the car's maker: ");
@@ -198,7 +198,7 @@ namespace RideDiary.Commands
 
                 DisplayUI.ClearLine();
 
-                goto MethodBeginning;
+                goto LabelMethodBeginning;
             }
 
             return car_Maker;
@@ -206,7 +206,7 @@ namespace RideDiary.Commands
 
         private static string ReadCarModel()
         {
-        MethodBeginning:
+        LabelMethodBeginning:
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 Enter the car model: ");
@@ -220,7 +220,7 @@ namespace RideDiary.Commands
 
                 DisplayUI.ClearLine();
 
-                goto MethodBeginning;
+                goto LabelMethodBeginning;
             }
 
             return car_Model;

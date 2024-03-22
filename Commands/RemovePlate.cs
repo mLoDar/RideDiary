@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 using RideDiary.Scripts;
@@ -24,7 +23,7 @@ namespace RideDiary.Commands
 
         internal static async Task Start()
         {
-        MethodBeginning:
+        LabelMethodBeginning:
 
             Console.Title = "RideDiary | Remove added number plate";
             DisplayUI.ResetConsole();
@@ -33,7 +32,7 @@ namespace RideDiary.Commands
 
             if (rideDiaryData.ContainsKey("error"))
             {
-                await DisplayUI.DisplayError($"{rideDiaryData["error"]}");
+                await DisplayUI.DisplayError($"                 {rideDiaryData["error"]}");
                 return;
             }
 
@@ -151,7 +150,7 @@ namespace RideDiary.Commands
                     break;
 
                 case 'n':
-                    goto MethodBeginning;
+                    goto LabelMethodBeginning;
 
                 case (char)ConsoleKey.Escape:
                     Environment.Exit(0);

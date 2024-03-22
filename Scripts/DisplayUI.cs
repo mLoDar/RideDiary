@@ -32,12 +32,12 @@ namespace RideDiary.Scripts
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("                 ");
 
-            string menuFirstBar = "__________________";
+            string menuFirstBar = "________________________________________";
 
             foreach (char dash in menuFirstBar)
             {
                 Console.Write(dash);
-                await Task.Delay(25);
+                await Task.Delay(15);
             }
             Console.WriteLine();
 
@@ -51,7 +51,7 @@ namespace RideDiary.Scripts
             Console.WriteLine("                 [4] Remove added number plate");
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("                 __________________");
+            Console.WriteLine("                 ________________________________________");
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 ");

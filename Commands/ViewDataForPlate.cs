@@ -458,7 +458,7 @@ namespace RideDiary.Commands
             int currentPageIndex = 0;
 
 
-
+            
         LabelDisplayPage:
 
             Console.Title = "RideDiary | Displaying expenses data";

@@ -30,28 +30,24 @@ namespace RideDiary.Scripts
 
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("                 ");
+            Console.WriteLine("                 ________________________________________");
 
-            string menuFirstBar = "________________________________________";
-
-            foreach (char dash in menuFirstBar)
-            {
-                Console.Write(dash);
-                await Task.Delay(15);
-            }
-            Console.WriteLine();
-
-
+            await Task.Delay(50);
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 ");
             Console.WriteLine("                 [1] Add new number plate");
+            await Task.Delay(50);
             Console.WriteLine("                 [2] Add data to an existing number plate");
+            await Task.Delay(50);
             Console.WriteLine("                 [3] View data for a number plate");
+            await Task.Delay(50);
             Console.WriteLine("                 [4] Remove added number plate");
+            await Task.Delay(50);
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("                 ________________________________________");
+            await Task.Delay(50);
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 ");

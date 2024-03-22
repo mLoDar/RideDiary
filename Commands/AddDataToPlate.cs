@@ -16,7 +16,7 @@ namespace RideDiary.Commands
 {
     internal class AddDataToPlate
     {
-        private static JObject rideDiaryData = new();
+        private static JObject _rideDiaryData = new();
 
 
 
@@ -33,15 +33,15 @@ namespace RideDiary.Commands
 
             LoadDataFromFile();
 
-            if (rideDiaryData.ContainsKey("error"))
+            if (_rideDiaryData.ContainsKey("error"))
             {
-                await DisplayUI.DisplayError($"                 {rideDiaryData["error"]}");
+                await DisplayUI.DisplayError($"                 {_rideDiaryData["error"]}");
                 return;
             }
 
-            if (rideDiaryData.ContainsKey("NumberPlates") == false)
+            if (_rideDiaryData.ContainsKey("NumberPlates") == false)
             {
-                rideDiaryData["NumberPlates"] = new JArray();
+                _rideDiaryData["NumberPlates"] = new JArray();
             }
 
 
@@ -50,7 +50,7 @@ namespace RideDiary.Commands
 
 
 
-            JArray numberPlates = rideDiaryData["NumberPlates"] as JArray ?? new();
+            JArray numberPlates = _rideDiaryData["NumberPlates"] as JArray ?? new();
 
             if (numberPlates.Count <= 0)
             {
@@ -148,11 +148,11 @@ namespace RideDiary.Commands
 
 
             numberPlates[plateIndex] = selectedPlate;
-            rideDiaryData["NumberPlates"] = numberPlates;
+            _rideDiaryData["NumberPlates"] = numberPlates;
 
 
 
-            JObject saveFileResult = await SaveFileHandler.SaveDataToFile(rideDiaryData);
+            JObject saveFileResult = await SaveFileHandler.SaveDataToFile(_rideDiaryData);
 
             if (saveFileResult.ContainsKey("error"))
             {
@@ -196,14 +196,14 @@ namespace RideDiary.Commands
 
 
 
-            Task task_SaveFileLoading = new(async () =>
+            Task loadSaveFile = new(async () =>
             {
-                rideDiaryData = await SaveFileHandler.LoadDataFromFile();
+                _rideDiaryData = await SaveFileHandler.LoadDataFromFile();
 
                 saveFileLoaded = true;
             });
 
-            Task task_LoadingAnimation = new(async () =>
+            Task loadingAnimation = new(async () =>
             {
                 while (saveFileLoaded == false)
                 {
@@ -214,8 +214,8 @@ namespace RideDiary.Commands
 
 
 
-            task_SaveFileLoading.Start();
-            task_LoadingAnimation.Start();
+            loadSaveFile.Start();
+            loadingAnimation.Start();
 
             while (saveFileLoaded == false)
             {

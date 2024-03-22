@@ -15,7 +15,7 @@ namespace RideDiary.Commands
 {
     internal class ViewDataForPlate
     {
-        private static JObject rideDiaryData = new();
+        private static JObject _rideDiaryData = new();
 
 
 
@@ -34,15 +34,15 @@ namespace RideDiary.Commands
 
             LoadDataFromFile();
 
-            if (rideDiaryData.ContainsKey("error"))
+            if (_rideDiaryData.ContainsKey("error"))
             {
-                await DisplayUI.DisplayError($"                 {rideDiaryData["error"]}");
+                await DisplayUI.DisplayError($"                 {_rideDiaryData["error"]}");
                 return;
             }
 
-            if (rideDiaryData.ContainsKey("NumberPlates") == false)
+            if (_rideDiaryData.ContainsKey("NumberPlates") == false)
             {
-                rideDiaryData["NumberPlates"] = new JArray();
+                _rideDiaryData["NumberPlates"] = new JArray();
             }
 
 
@@ -51,7 +51,7 @@ namespace RideDiary.Commands
 
 
 
-            JArray numberPlates = rideDiaryData["NumberPlates"] as JArray ?? new();
+            JArray numberPlates = _rideDiaryData["NumberPlates"] as JArray ?? new();
 
             if (numberPlates.Count <= 0)
             {
@@ -101,24 +101,24 @@ namespace RideDiary.Commands
 
 
 
-            JToken car_Maker = selectedPlate[plateProperty.Name]?["Car_Maker"];
-            JToken car_Model = selectedPlate[plateProperty.Name]?["Car_Model"];
+            JToken carMaker = selectedPlate[plateProperty.Name]?["Car_Maker"];
+            JToken carModel = selectedPlate[plateProperty.Name]?["Car_Model"];
 
-            if (car_Maker == null || car_Model == null)
+            if (carMaker == null || carModel == null)
             {
                 await DisplayUI.DisplayError("                 An unexpected error appeared, please try again");
                 return;
             }
 
-            JArray plate_Trips = selectedPlate[plateProperty.Name]?["Collection_Trips"] as JArray ?? new JArray();
-            JArray plate_Refuels = selectedPlate[plateProperty.Name]?["Collection_Refuels"] as JArray ?? new JArray();
-            JArray plate_Expenses = selectedPlate[plateProperty.Name]?["Collection_Expenses"] as JArray ?? new JArray();
+            JArray plateTrips = selectedPlate[plateProperty.Name]?["Collection_Trips"] as JArray ?? new JArray();
+            JArray plateRefuels = selectedPlate[plateProperty.Name]?["Collection_Refuels"] as JArray ?? new JArray();
+            JArray plateExpenses = selectedPlate[plateProperty.Name]?["Collection_Expenses"] as JArray ?? new JArray();
         
 
 
         LabelDisplayMainData:
 
-            DisplayData_Main(plateProperty, car_Maker, car_Model, plate_Trips, plate_Refuels, plate_Expenses);
+            DisplayDataMain(plateProperty, carMaker, carModel, plateTrips, plateRefuels, plateExpenses);
 
 
             
@@ -131,17 +131,17 @@ namespace RideDiary.Commands
             {
                 case '1':
                     Console.Title = $"RideDiary | Displaying trip data for {plateProperty.Name}";
-                    DisplayData_Trips(plate_Trips);
+                    DisplayDataTrips(plateTrips);
                     goto LabelDisplayMainData;
 
                 case '2':
                     Console.Title = $"RideDiary | Displaying expenses data for {plateProperty.Name}";
-                    DisplayData_Refuels(plate_Refuels);
+                    DisplayDataRefuels(plateRefuels);
                     goto LabelDisplayMainData;
 
                 case '3':
                     Console.Title = $"RideDiary | Displaying refueling for {plateProperty.Name}";
-                    DisplayData_Expenses(plate_Expenses);
+                    DisplayDataExpenses(plateExpenses);
                     goto LabelDisplayMainData;
 
                 case '4':
@@ -168,14 +168,14 @@ namespace RideDiary.Commands
 
 
 
-            Task task_SaveFileLoading = new(async () =>
+            Task loadSaveFile = new(async () =>
             {
-                rideDiaryData = await SaveFileHandler.LoadDataFromFile();
+                _rideDiaryData = await SaveFileHandler.LoadDataFromFile();
 
                 saveFileLoaded = true;
             });
 
-            Task task_LoadingAnimation = new(async () =>
+            Task loadingAnimation = new(async () =>
             {
                 while (saveFileLoaded == false)
                 {
@@ -186,8 +186,8 @@ namespace RideDiary.Commands
 
 
 
-            task_SaveFileLoading.Start();
-            task_LoadingAnimation.Start();
+            loadSaveFile.Start();
+            loadingAnimation.Start();
 
             while (saveFileLoaded == false)
             {
@@ -195,7 +195,7 @@ namespace RideDiary.Commands
             }
         }
 
-        private static void DisplayData_Main(JProperty plateProperty, JToken car_Maker, JToken car_Model, JArray plate_Trips, JArray plate_Refuels, JArray plate_Expenses)
+        private static void DisplayDataMain(JProperty plateProperty, JToken carMaker, JToken carModel, JArray plateTrips, JArray plateRefuels, JArray plateExpenses)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = $"RideDiary | Data of {plateProperty.Name}";
@@ -212,24 +212,24 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 Car: ");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"{car_Maker} {car_Model}");
+            Console.WriteLine($"{carMaker} {carModel}");
 
             Console.WriteLine();
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 [1] Total trips: ");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(plate_Trips.Count);
+            Console.WriteLine(plateTrips.Count);
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 [2] Total refuels:  ");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(plate_Refuels.Count);
+            Console.WriteLine(plateRefuels.Count);
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 [3] Total expenses:  ");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(plate_Expenses.Count);
+            Console.WriteLine(plateExpenses.Count);
 
             Console.WriteLine("                 ");
             Console.WriteLine("                 ");
@@ -243,17 +243,17 @@ namespace RideDiary.Commands
             Console.Write("                 > ");
         }
 
-        private static void DisplayData_Trips(JArray plate_Trips)
+        private static void DisplayDataTrips(JArray plateTrips)
         {
-            if (plate_Trips.Count <= 0)
+            if (plateTrips.Count <= 0)
             {
                 return;
             }
 
             int dataEntriesPerPage = 15;
 
-            int arraySizeHelper = (int)Math.Ceiling(Convert.ToDecimal(plate_Trips.Count) / dataEntriesPerPage);
-            string[,] trip_Pages = new string[arraySizeHelper, dataEntriesPerPage];
+            int arraySizeHelper = (int)Math.Ceiling(Convert.ToDecimal(plateTrips.Count) / dataEntriesPerPage);
+            string[,] tripPages = new string[arraySizeHelper, dataEntriesPerPage];
 
 
 
@@ -263,7 +263,7 @@ namespace RideDiary.Commands
 
 
 
-            foreach (JObject trip in plate_Trips.Cast<JObject>())
+            foreach (JObject trip in plateTrips.Cast<JObject>())
             {
                 int trip_KilometersStart = Convert.ToInt32(trip["Trip_KilometersStart"]);
                 int trip_KilometersEnd = Convert.ToInt32(trip["Trip_KilometersEnd"]);
@@ -277,11 +277,11 @@ namespace RideDiary.Commands
 
 
 
-            plate_Trips = new JArray(plate_Trips.OrderByDescending(obj => DateTime.Parse(obj["Trip_Date"].ToString())));
+            plateTrips = new JArray(plateTrips.OrderByDescending(obj => DateTime.Parse(obj["Trip_Date"].ToString())));
 
 
 
-            foreach (JObject trip in plate_Trips.Cast<JObject>())
+            foreach (JObject trip in plateTrips.Cast<JObject>())
             {
                 int trip_KilometersStart = Convert.ToInt32(trip["Trip_KilometersStart"]);
                 int trip_KilometersEnd = Convert.ToInt32(trip["Trip_KilometersEnd"]);
@@ -289,7 +289,7 @@ namespace RideDiary.Commands
 
                 string trip_CombinedInformation = $"{trip["Trip_Date"]} | {trip_KilometersTraveled.ToString().PadLeft(lengthHelper)} km | {trip["Trip_Description"]}";
 
-                trip_Pages[arrayHelperY, arrayHelperX] = trip_CombinedInformation;
+                tripPages[arrayHelperY, arrayHelperX] = trip_CombinedInformation;
 
                 arrayHelperX++;
 
@@ -311,9 +311,9 @@ namespace RideDiary.Commands
             DisplayUI.ResetConsole();
             Console.ForegroundColor = ConsoleColor.White;
 
-            for (int i = 0; i < trip_Pages.GetLength(1); i++)
+            for (int i = 0; i < tripPages.GetLength(1); i++)
             {
-                string singleTrip = trip_Pages[currentPageIndex, i];
+                string singleTrip = tripPages[currentPageIndex, i];
 
                 if (singleTrip != null && singleTrip.Equals(string.Empty) == false)
                 {
@@ -338,7 +338,7 @@ namespace RideDiary.Commands
 
             Console.WriteLine("                 ");
 
-            if (plate_Trips.Count - dataEntriesPerPage >= 1)
+            if (plateTrips.Count - dataEntriesPerPage >= 1)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("                 ______________________");
@@ -355,7 +355,7 @@ namespace RideDiary.Commands
                 Console.WriteLine("(A)");
             }
             
-            if (currentPageIndex + 1 <= trip_Pages.GetLength(0) - 1)
+            if (currentPageIndex + 1 <= tripPages.GetLength(0) - 1)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.Write("                 (D)");
@@ -392,7 +392,7 @@ namespace RideDiary.Commands
 
                 case 'd':
 
-                    if (currentPageIndex + 1 > trip_Pages.GetLength(0) - 1)
+                    if (currentPageIndex + 1 > tripPages.GetLength(0) - 1)
                     {
                         goto LabelKeyRead;
                     }
@@ -408,49 +408,49 @@ namespace RideDiary.Commands
             }
         }
 
-        private static void DisplayData_Refuels(JArray plate_Refuels)
+        private static void DisplayDataRefuels(JArray plateRefuels)
         {
-            if (plate_Refuels.Count <= 0)
+            if (plateRefuels.Count <= 0)
             {
                 return;
             }
 
             int dataEntriesPerPage = 15;
 
-            int arraySizeHelper = (int)Math.Ceiling(Convert.ToDecimal(plate_Refuels.Count) / dataEntriesPerPage);
-            string[,] refuels_Pages = new string[arraySizeHelper, dataEntriesPerPage];
+            int arraySizeHelper = (int)Math.Ceiling(Convert.ToDecimal(plateRefuels.Count) / dataEntriesPerPage);
+            string[,] refuelsPages = new string[arraySizeHelper, dataEntriesPerPage];
 
 
 
             int arrayHelperX = 0;
             int arrayHelperY = 0;
 
-            int lengthHelperEuro = plate_Refuels
+            int lengthHelperEuro = plateRefuels
                 .Select(obj => Convert.ToDecimal(obj["Refuel_PaidInEuro"].ToString().Replace('.', ',')))
                 .Select(number => number.ToString().Length)
                 .Max();
 
-            int lengthHelperLiter = plate_Refuels
+            int lengthHelperLiter = plateRefuels
                 .Select(obj => Convert.ToDecimal(obj["Refuel_AmountAsLiter"].ToString().Replace('.', ',')))
                 .Select(number => number.ToString().Length)
                 .Max();
 
 
-            plate_Refuels = new JArray(plate_Refuels.OrderByDescending(obj => DateTime.Parse(obj["Refuel_Date"].ToString())));
+            plateRefuels = new JArray(plateRefuels.OrderByDescending(obj => DateTime.Parse(obj["Refuel_Date"].ToString())));
 
 
 
-            foreach (JObject refuel in plate_Refuels.Cast<JObject>())
+            foreach (JObject refuel in plateRefuels.Cast<JObject>())
             {
-                decimal.TryParse(Convert.ToString(refuel["Refuel_PaidInEuro"])?.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuel_AmountEuro);
-                string refuelEuro_Formatted = string.Format("{0:F2}", refuel_AmountEuro);
+                decimal.TryParse(Convert.ToString(refuel["Refuel_PaidInEuro"])?.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuelAmountEuro);
+                string refuelEuroFormatted = string.Format("{0:F2}", refuelAmountEuro);
 
-                decimal.TryParse(Convert.ToString(refuel["Refuel_AmountAsLiter"])?.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuel_Liter);
-                string refuelLiter_Formatted = string.Format("{0:F2}", refuel_Liter);
+                decimal.TryParse(Convert.ToString(refuel["Refuel_AmountAsLiter"])?.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuelLiter);
+                string refuelLiterFormatted = string.Format("{0:F2}", refuelLiter);
 
-                string refuel_CombinedInformation = $"{refuel["Refuel_Date"]} | {refuelEuro_Formatted.PadRight(lengthHelperEuro)} € | {refuelLiter_Formatted.PadRight(lengthHelperEuro)} Liters";
+                string refuelCombinedInformation = $"{refuel["Refuel_Date"]} | {refuelEuroFormatted.PadRight(lengthHelperEuro)} € | {refuelLiterFormatted.PadRight(lengthHelperEuro)} Liters";
 
-                refuels_Pages[arrayHelperY, arrayHelperX] = refuel_CombinedInformation;
+                refuelsPages[arrayHelperY, arrayHelperX] = refuelCombinedInformation;
 
                 arrayHelperX++;
 
@@ -472,9 +472,9 @@ namespace RideDiary.Commands
             DisplayUI.ResetConsole();
             Console.ForegroundColor = ConsoleColor.White;
 
-            for (int i = 0; i < refuels_Pages.GetLength(1); i++)
+            for (int i = 0; i < refuelsPages.GetLength(1); i++)
             {
-                string singleRefuel = refuels_Pages[currentPageIndex, i];
+                string singleRefuel = refuelsPages[currentPageIndex, i];
 
                 if (singleRefuel != null && singleRefuel.Equals(string.Empty) == false)
                 {
@@ -499,7 +499,7 @@ namespace RideDiary.Commands
 
             Console.WriteLine("                 ");
 
-            if (plate_Refuels.Count - dataEntriesPerPage >= 1)
+            if (plateRefuels.Count - dataEntriesPerPage >= 1)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("                 ______________________");
@@ -516,7 +516,7 @@ namespace RideDiary.Commands
                 Console.WriteLine("(A)");
             }
 
-            if (currentPageIndex + 1 <= refuels_Pages.GetLength(0) - 1)
+            if (currentPageIndex + 1 <= refuelsPages.GetLength(0) - 1)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.Write("                 (D)");
@@ -553,7 +553,7 @@ namespace RideDiary.Commands
 
                 case 'd':
 
-                    if (currentPageIndex + 1 > refuels_Pages.GetLength(0) - 1)
+                    if (currentPageIndex + 1 > refuelsPages.GetLength(0) - 1)
                     {
                         goto LabelKeyRead;
                     }
@@ -569,42 +569,42 @@ namespace RideDiary.Commands
             }
         }
 
-        private static void DisplayData_Expenses(JArray plate_Expenses)
+        private static void DisplayDataExpenses(JArray plateExpenses)
         {
-            if (plate_Expenses.Count <= 0)
+            if (plateExpenses.Count <= 0)
             {
                 return;
             }
 
             int dataEntriesPerPage = 15;
 
-            int arraySizeHelper = (int)Math.Ceiling(Convert.ToDecimal(plate_Expenses.Count) / dataEntriesPerPage);
-            string[,] expense_Pages = new string[arraySizeHelper, dataEntriesPerPage];
+            int arraySizeHelper = (int)Math.Ceiling(Convert.ToDecimal(plateExpenses.Count) / dataEntriesPerPage);
+            string[,] expensePages = new string[arraySizeHelper, dataEntriesPerPage];
 
 
 
             int arrayHelperX = 0;
             int arrayHelperY = 0;
 
-            int lengthHelper = plate_Expenses
+            int lengthHelper = plateExpenses
                 .Select(obj => Convert.ToDecimal(obj["Expense_PaidInEuro"].ToString().Replace('.',',')))
                 .Select(number => number.ToString().Length)
                 .Max();
 
 
 
-            plate_Expenses = new JArray(plate_Expenses.OrderByDescending(obj => DateTime.Parse(obj["Expense_Date"].ToString())));
+            plateExpenses = new JArray(plateExpenses.OrderByDescending(obj => DateTime.Parse(obj["Expense_Date"].ToString())));
 
 
 
-            foreach (JObject expense in plate_Expenses.Cast<JObject>())
+            foreach (JObject expense in plateExpenses.Cast<JObject>())
             {
                 decimal.TryParse(Convert.ToString(expense["Expense_PaidInEuro"])?.Replace(',','.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal expense_AmountEuro);
-                string expense_Formatted = string.Format("{0:F2}", expense_AmountEuro);
+                string expenseFormatted = string.Format("{0:F2}", expense_AmountEuro);
 
-                string expense_CombinedInformation = $"{expense["Expense_Date"]} | {expense_Formatted.PadLeft(lengthHelper)} € | {expense["Expense_Description"]}";
+                string expenseCombinedInformation = $"{expense["Expense_Date"]} | {expenseFormatted.PadLeft(lengthHelper)} € | {expense["Expense_Description"]}";
 
-                expense_Pages[arrayHelperY, arrayHelperX] = expense_CombinedInformation;
+                expensePages[arrayHelperY, arrayHelperX] = expenseCombinedInformation;
 
                 arrayHelperX++;
 
@@ -626,9 +626,9 @@ namespace RideDiary.Commands
             DisplayUI.ResetConsole();
             Console.ForegroundColor = ConsoleColor.White;
 
-            for (int i = 0; i < expense_Pages.GetLength(1); i++)
+            for (int i = 0; i < expensePages.GetLength(1); i++)
             {
-                string singleExpense = expense_Pages[currentPageIndex, i];
+                string singleExpense = expensePages[currentPageIndex, i];
 
                 if (singleExpense != null && singleExpense.Equals(string.Empty) == false)
                 {
@@ -653,7 +653,7 @@ namespace RideDiary.Commands
 
             Console.WriteLine("                 ");
 
-            if (plate_Expenses.Count - dataEntriesPerPage >= 1)
+            if (plateExpenses.Count - dataEntriesPerPage >= 1)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("                 ______________________");
@@ -670,7 +670,7 @@ namespace RideDiary.Commands
                 Console.WriteLine("(A)");
             }
 
-            if (currentPageIndex + 1 <= expense_Pages.GetLength(0) - 1)
+            if (currentPageIndex + 1 <= expensePages.GetLength(0) - 1)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.Write("                 (D)");
@@ -707,7 +707,7 @@ namespace RideDiary.Commands
 
                 case 'd':
 
-                    if (currentPageIndex + 1 > expense_Pages.GetLength(0) - 1)
+                    if (currentPageIndex + 1 > expensePages.GetLength(0) - 1)
                     {
                         goto LabelKeyRead;
                     }

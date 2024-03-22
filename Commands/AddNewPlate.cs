@@ -15,7 +15,7 @@ namespace RideDiary.Commands
 {
     internal class AddNewPlate
     {
-        private static JObject rideDiaryData = new();
+        private static JObject _rideDiaryData = new();
 
 
 
@@ -32,15 +32,15 @@ namespace RideDiary.Commands
 
             LoadDataFromFile();
 
-            if (rideDiaryData.ContainsKey("error"))
+            if (_rideDiaryData.ContainsKey("error"))
             {
-                await DisplayUI.DisplayError($"                 {rideDiaryData["error"]}");
+                await DisplayUI.DisplayError($"                 {_rideDiaryData["error"]}");
                 return;
             }
 
-            if (rideDiaryData.ContainsKey("NumberPlates") == false)
+            if (_rideDiaryData.ContainsKey("NumberPlates") == false)
             {
-                rideDiaryData["NumberPlates"] = new JArray();
+                _rideDiaryData["NumberPlates"] = new JArray();
             }
 
 
@@ -49,18 +49,18 @@ namespace RideDiary.Commands
 
 
 
-            string car_Plate = ReadCarPlate();
-            string car_Maker = ReadCarMaker();
-            string car_Model = ReadCarModel();
+            string carPlate = ReadCarPlate();
+            string carMaker = ReadCarMaker();
+            string carModel = ReadCarModel();
 
 
 
             JObject newPlate = new()
             {
-                [car_Plate] = new JObject()
+                [carPlate] = new JObject()
                 {
-                    ["Car_Maker"] = car_Maker,
-                    ["Car_Model"] = car_Model,
+                    ["Car_Maker"] = carMaker,
+                    ["Car_Model"] = carModel,
                     ["Collection_Trips"] = new JArray(),
                     ["Collection_Refuels"] = new JArray(),
                     ["Collection_Expenses"] = new JArray()
@@ -69,14 +69,14 @@ namespace RideDiary.Commands
 
 
 
-            JArray numberPlates = (rideDiaryData["NumberPlates"] as JArray) ?? new JArray();
+            JArray numberPlates = (_rideDiaryData["NumberPlates"] as JArray) ?? new JArray();
             numberPlates.Add(newPlate);
 
-            rideDiaryData["NumberPlates"] = numberPlates;
+            _rideDiaryData["NumberPlates"] = numberPlates;
 
 
 
-            JObject saveFileResult = await SaveFileHandler.SaveDataToFile(rideDiaryData);
+            JObject saveFileResult = await SaveFileHandler.SaveDataToFile(_rideDiaryData);
 
             if (saveFileResult.ContainsKey("error"))
             {
@@ -120,14 +120,14 @@ namespace RideDiary.Commands
 
 
 
-            Task task_SaveFileLoading = new(async () =>
+            Task loadSaveFile = new(async () =>
             {
-                rideDiaryData = await SaveFileHandler.LoadDataFromFile();
-                
+                _rideDiaryData = await SaveFileHandler.LoadDataFromFile();
+
                 saveFileLoaded = true;
             });
 
-            Task task_LoadingAnimation = new(async () =>
+            Task loadingAnimation = new(async () =>
             {
                 while (saveFileLoaded == false)
                 {
@@ -138,8 +138,8 @@ namespace RideDiary.Commands
 
 
 
-            task_SaveFileLoading.Start();
-            task_LoadingAnimation.Start();
+            loadSaveFile.Start();
+            loadingAnimation.Start();
 
             while (saveFileLoaded == false)
             {
@@ -166,11 +166,11 @@ namespace RideDiary.Commands
 
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            string car_Plate = Console.ReadLine() ?? string.Empty;
+            string carPlate = Console.ReadLine() ?? string.Empty;
 
 
 
-            if (RegexPatterns.AllWhitespaces().Replace(car_Plate, string.Empty).Equals(string.Empty))
+            if (RegexPatterns.AllWhitespaces().Replace(carPlate, string.Empty).Equals(string.Empty))
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -181,11 +181,11 @@ namespace RideDiary.Commands
 
 
 
-            JArray numberPlates = rideDiaryData["NumberPlates"] as JArray ?? new JArray();
+            JArray numberPlates = _rideDiaryData["NumberPlates"] as JArray ?? new JArray();
 
             foreach (JObject plate in numberPlates.Cast<JObject>())
             {
-                if (plate.ContainsKey(car_Plate))
+                if (plate.ContainsKey(carPlate))
                 {
                     DisplayUI.DisplayError("                 The entered plate was already added").Wait();
 
@@ -199,7 +199,7 @@ namespace RideDiary.Commands
 
 
 
-            return car_Plate;
+            return carPlate;
         }
 
         private static string ReadCarMaker()
@@ -210,9 +210,9 @@ namespace RideDiary.Commands
             Console.Write("                 Enter the car's maker: ");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            string car_Maker = Console.ReadLine() ?? string.Empty;
+            string carMaker = Console.ReadLine() ?? string.Empty;
 
-            if (RegexPatterns.AllWhitespaces().Replace(car_Maker, string.Empty).Equals(string.Empty))
+            if (RegexPatterns.AllWhitespaces().Replace(carMaker, string.Empty).Equals(string.Empty))
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -221,7 +221,7 @@ namespace RideDiary.Commands
                 goto LabelMethodBeginning;
             }
 
-            return car_Maker;
+            return carMaker;
         }
 
         private static string ReadCarModel()
@@ -232,9 +232,9 @@ namespace RideDiary.Commands
             Console.Write("                 Enter the car model: ");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            string car_Model = Console.ReadLine() ?? string.Empty;
+            string carModel = Console.ReadLine() ?? string.Empty;
 
-            if (RegexPatterns.AllWhitespaces().Replace(car_Model, string.Empty).Equals(string.Empty))
+            if (RegexPatterns.AllWhitespaces().Replace(carModel, string.Empty).Equals(string.Empty))
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -243,7 +243,7 @@ namespace RideDiary.Commands
                 goto LabelMethodBeginning;
             }
 
-            return car_Model;
+            return carModel;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace RideDiary.Scripts
 {
     internal class SaveFileHandler
     {
-        private static readonly string path_SaveFile = ApplicationValues.path_SaveFile;
+        private static readonly string _pathSaveFile = ApplicationValues.pathSaveFile;
 
 
 
@@ -22,11 +22,11 @@ namespace RideDiary.Scripts
 
         internal static async Task<JObject> LoadDataFromFile()
         {
-            if (File.Exists(path_SaveFile) == false)
+            if (File.Exists(_pathSaveFile) == false)
             {
                 try
                 {
-                    await File.WriteAllTextAsync(path_SaveFile, "{}");
+                    await File.WriteAllTextAsync(_pathSaveFile, "{}");
                 }
                 catch
                 {
@@ -36,13 +36,13 @@ namespace RideDiary.Scripts
 
 
 
-            string jsonDataFromSaveFile = await File.ReadAllTextAsync(path_SaveFile);
+            string jsonDataFromSaveFile = await File.ReadAllTextAsync(_pathSaveFile);
 
             if (RegexPatterns.AllWhitespaces().Replace(jsonDataFromSaveFile, string.Empty).Equals(string.Empty))
             {
                 try
                 {
-                    await File.WriteAllTextAsync(path_SaveFile, "{}");
+                    await File.WriteAllTextAsync(_pathSaveFile, "{}");
                 }
                 catch
                 {
@@ -74,7 +74,7 @@ namespace RideDiary.Scripts
             {
                 string jsonDataToSave = rideDiaryData.ToString(Formatting.None) ?? "{}";
 
-                await File.WriteAllTextAsync(path_SaveFile, jsonDataToSave);
+                await File.WriteAllTextAsync(_pathSaveFile, jsonDataToSave);
 
                 return JObject.Parse("{success: 'true'}");
             }

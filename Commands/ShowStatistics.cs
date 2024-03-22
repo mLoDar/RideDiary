@@ -14,7 +14,7 @@ namespace RideDiary.Commands
 {
     internal class ShowStatistics
     {
-        private static JObject rideDiaryData = new();
+        private static JObject _rideDiaryData = new();
 
 
 
@@ -33,15 +33,15 @@ namespace RideDiary.Commands
 
             LoadDataFromFile();
 
-            if (rideDiaryData.ContainsKey("error"))
+            if (_rideDiaryData.ContainsKey("error"))
             {
-                await DisplayUI.DisplayError($"                 {rideDiaryData["error"]}");
+                await DisplayUI.DisplayError($"                 {_rideDiaryData["error"]}");
                 return;
             }
 
-            if (rideDiaryData.ContainsKey("NumberPlates") == false)
+            if (_rideDiaryData.ContainsKey("NumberPlates") == false)
             {
-                rideDiaryData["NumberPlates"] = new JArray();
+                _rideDiaryData["NumberPlates"] = new JArray();
             }
 
 
@@ -50,7 +50,7 @@ namespace RideDiary.Commands
 
 
 
-            JArray numberPlates = rideDiaryData["NumberPlates"] as JArray ?? new();
+            JArray numberPlates = _rideDiaryData["NumberPlates"] as JArray ?? new();
 
             if (numberPlates.Count <= 0)
             {
@@ -160,14 +160,14 @@ namespace RideDiary.Commands
 
 
 
-            Task task_SaveFileLoading = new(async () =>
+            Task loadSaveFile = new(async () =>
             {
-                rideDiaryData = await SaveFileHandler.LoadDataFromFile();
+                _rideDiaryData = await SaveFileHandler.LoadDataFromFile();
 
                 saveFileLoaded = true;
             });
 
-            Task task_LoadingAnimation = new(async () =>
+            Task loadingAnimation = new(async () =>
             {
                 while (saveFileLoaded == false)
                 {
@@ -178,8 +178,8 @@ namespace RideDiary.Commands
 
 
 
-            task_SaveFileLoading.Start();
-            task_LoadingAnimation.Start();
+            loadSaveFile.Start();
+            loadingAnimation.Start();
 
             while (saveFileLoaded == false)
             {
@@ -204,10 +204,10 @@ namespace RideDiary.Commands
 
 
 
-            JToken car_Maker = selectedPlate[plateProperty.Name]?["Car_Maker"] ?? "-";
-            JToken car_Model = selectedPlate[plateProperty.Name]?["Car_Model"] ?? "-";
+            JToken carMaker = selectedPlate[plateProperty.Name]?["Car_Maker"] ?? "-";
+            JToken carModel = selectedPlate[plateProperty.Name]?["Car_Model"] ?? "-";
 
-            if (car_Maker.Equals("-") || car_Model.Equals("-"))
+            if (carMaker.Equals("-") || carModel.Equals("-"))
             {
                 await DisplayUI.DisplayError("                 An unexpected error appeared, please try again");
                 return;
@@ -216,31 +216,31 @@ namespace RideDiary.Commands
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"                 Here are some stats for your {car_Maker} {car_Model}");
+            Console.WriteLine($"                 Here are some stats for your {carMaker} {carModel}");
             Console.WriteLine("                 ");
 
 
 
-            JArray plate_Trips = selectedPlate[plateProperty.Name]?["Collection_Trips"] as JArray ?? new JArray();
-            JArray plate_Refuels = selectedPlate[plateProperty.Name]?["Collection_Refuels"] as JArray ?? new JArray();
-            JArray plate_Expenses = selectedPlate[plateProperty.Name]?["Collection_Expenses"] as JArray ?? new JArray();
+            JArray plateTrips = selectedPlate[plateProperty.Name]?["Collection_Trips"] as JArray ?? new JArray();
+            JArray plateRefuels = selectedPlate[plateProperty.Name]?["Collection_Refuels"] as JArray ?? new JArray();
+            JArray plateExpenses = selectedPlate[plateProperty.Name]?["Collection_Expenses"] as JArray ?? new JArray();
             
 
 
-            if (plate_Trips.Count != 0)
+            if (plateTrips.Count != 0)
             {
                 int kilometersTotal = 0;
 
-                foreach (JObject trip in plate_Trips.Cast<JObject>())
+                foreach (JObject trip in plateTrips.Cast<JObject>())
                 {
-                    _ = int.TryParse((string?)trip["Trip_KilometersStart"], out int trip_KilometersStart);
-                    _ = int.TryParse((string?)trip["Trip_KilometersEnd"], out int trip_KilometersEnd);
+                    _ = int.TryParse((string?)trip["Trip_KilometersStart"], out int tripKilometersStart);
+                    _ = int.TryParse((string?)trip["Trip_KilometersEnd"], out int tripKilometersEnd);
 
-                    int trip_TravelledKilometers = trip_KilometersEnd - trip_KilometersStart;
+                    int tripTravelledKilometers = tripKilometersEnd - tripKilometersStart;
 
-                    if (trip_TravelledKilometers > 0)
+                    if (tripTravelledKilometers > 0)
                     {
-                        kilometersTotal += trip_TravelledKilometers;
+                        kilometersTotal += tripTravelledKilometers;
                     }
                 }
 
@@ -255,7 +255,7 @@ namespace RideDiary.Commands
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(" across ");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write($"{plate_Trips.Count} rides");
+                Console.Write($"{plateTrips.Count} rides");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(".");
 
@@ -264,7 +264,7 @@ namespace RideDiary.Commands
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("                 When looked at, there is an average trip length of ");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write($"{decimal.Divide(kilometersTotal, plate_Trips.Count):0.00} kilometers");
+                Console.Write($"{decimal.Divide(kilometersTotal, plateTrips.Count):0.00} kilometers");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(".");
 
@@ -304,15 +304,15 @@ namespace RideDiary.Commands
 
 
 
-            if (plate_Refuels.Count != 0)
+            if (plateRefuels.Count != 0)
             {
-                decimal refuel_PaidInTotal = 0;
-                decimal refuel_LitersInTotal = 0;
+                decimal refuelPaidInTotal = 0;
+                decimal refuelLitersInTotal = 0;
 
-                foreach (JObject refuel in plate_Refuels.Cast<JObject>())
+                foreach (JObject refuel in plateRefuels.Cast<JObject>())
                 {
-                    refuel_PaidInTotal += (decimal)refuel["Refuel_PaidInEuro"];
-                    refuel_LitersInTotal += (decimal)refuel["Refuel_AmountAsLiter"];
+                    refuelPaidInTotal += (decimal)refuel["Refuel_PaidInEuro"];
+                    refuelLitersInTotal += (decimal)refuel["Refuel_AmountAsLiter"];
                 }
 
 
@@ -320,25 +320,24 @@ namespace RideDiary.Commands
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("                 As we all know, cars need fuel. According to the save file you refueled your car ");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write($"{plate_Refuels.Count} times");
+                Console.Write($"{plateRefuels.Count} times");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(".");
 
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("                 When looking at it, you managed to get your hands on ");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write($"{refuel_LitersInTotal} liters");
+                Console.Write($"{refuelLitersInTotal} liters");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(" of fuel.");
 
-                Console.WriteLine("                 An impressive amount, sadly everything has a price tag on it :/");
-                Console.Write("                 You were charged ");
+                Console.Write("                 For refuelling you were charged ");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write($"{refuel_PaidInTotal}€");
+                Console.Write($"{refuelPaidInTotal}€");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(" in total, which makes an average cost of ");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write($"{decimal.Divide(refuel_PaidInTotal, refuel_LitersInTotal):0.00}€");
+                Console.Write($"{decimal.Divide(refuelPaidInTotal, refuelLitersInTotal):0.00}€");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(" per liter.");
             }
@@ -357,13 +356,13 @@ namespace RideDiary.Commands
 
 
 
-            if (plate_Expenses.Count != 0)
+            if (plateExpenses.Count != 0)
             {
-                decimal expenses_PaidInTotal = 0;
+                decimal expensesPaidInTotal = 0;
 
-                foreach (JObject expense in plate_Expenses.Cast<JObject>())
+                foreach (JObject expense in plateExpenses.Cast<JObject>())
                 {
-                    expenses_PaidInTotal += (decimal)expense["Expense_PaidInEuro"];
+                    expensesPaidInTotal += (decimal)expense["Expense_PaidInEuro"];
                 }
 
 
@@ -373,11 +372,11 @@ namespace RideDiary.Commands
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("                 Your ");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write($"{plate_Expenses.Count}");
+                Console.Write($"{plateExpenses.Count}");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(" different expenses sum up to ");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write($"{expenses_PaidInTotal}€");
+                Console.Write($"{expensesPaidInTotal}€");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(".");
             }

@@ -39,6 +39,10 @@ namespace RideDiary
                     break;
 
                 case '4':
+                    await RemovePlate.Start();
+                    break;
+
+                case '5':
                     await ShowStatistics.Start();
                     break;
 

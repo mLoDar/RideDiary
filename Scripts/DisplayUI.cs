@@ -11,13 +11,37 @@ namespace RideDiary.Scripts
     {
         internal static async Task RootMenu()
         {
-            ResetUI();
+            ResetConsole();
+
+
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("                 RideDiary");
+            Console.Write("                 ");
+
+            string menuTitle = "RideDiary";
+
+            foreach (char letter in menuTitle)
+            {
+                Console.Write(letter);
+                await Task.Delay(50);
+            }
+            Console.WriteLine();
+
+
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("                 __________________");
+            Console.Write("                 ");
+
+            string menuFirstBar = "__________________";
+
+            foreach (char dash in menuFirstBar)
+            {
+                Console.Write(dash);
+                await Task.Delay(25);
+            }
+            Console.WriteLine();
+
+
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 ");
@@ -35,7 +59,7 @@ namespace RideDiary.Scripts
             Console.Write("                 ");
         }
 
-        internal static void ResetUI()
+        internal static void ResetConsole()
         {
             Console.Clear();
             Console.SetCursorPosition(0, 5);

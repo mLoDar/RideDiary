@@ -18,9 +18,6 @@ As for the most projects that I created, a console application is a good
 way to start, as it can be extended to syncing with a server. For now all data is only stored on
 the local hard drive.
 
-Currently (29th January 2024) the statistics feature is not implemented yet, but will add this
-definetly later on : )
-
 <br>
 
 ---

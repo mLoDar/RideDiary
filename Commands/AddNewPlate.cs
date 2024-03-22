@@ -150,7 +150,7 @@ namespace RideDiary.Commands
 
 
 
-            if (ApplicationValues.AllWhitespaces().Replace(car_Plate, string.Empty).Equals(string.Empty))
+            if (RegexPatterns.AllWhitespaces().Replace(car_Plate, string.Empty).Equals(string.Empty))
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -192,7 +192,7 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.Cyan;
             string car_Maker = Console.ReadLine() ?? string.Empty;
 
-            if (ApplicationValues.AllWhitespaces().Replace(car_Maker, string.Empty).Equals(string.Empty))
+            if (RegexPatterns.AllWhitespaces().Replace(car_Maker, string.Empty).Equals(string.Empty))
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -214,7 +214,7 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.Cyan;
             string car_Model = Console.ReadLine() ?? string.Empty;
 
-            if (ApplicationValues.AllWhitespaces().Replace(car_Model, string.Empty).Equals(string.Empty))
+            if (RegexPatterns.AllWhitespaces().Replace(car_Model, string.Empty).Equals(string.Empty))
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 

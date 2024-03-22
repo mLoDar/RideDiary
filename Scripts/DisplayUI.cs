@@ -4,7 +4,7 @@
 
 
 
-namespace RideDiary
+namespace RideDiary.Scripts
 {
     internal class DisplayUI
     {
@@ -29,7 +29,9 @@ namespace RideDiary
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 ");
-            Console.WriteLine("                 [4] Statistics");
+            Console.WriteLine("                 [4] Show Statistics");
+
+            Console.Write("                 ");
         }
 
         internal static void ResetUI()

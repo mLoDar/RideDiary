@@ -1,5 +1,8 @@
 ﻿using System;
 
+using RideDiary.Scripts;
+using RideDiary.Commands;
+
 
 
 
@@ -23,15 +26,19 @@ namespace RideDiary
             switch (pressedKey)
             {
                 case '1':
+                    AddNewPlate.Start();
                     break;
 
                 case '2':
+                    AddDataToPlate.Start();
                     break;
 
                 case '3':
+                    ViewDataForPlate.Start();
                     break;
 
                 case '4':
+                    ShowStatistics.Start();
                     break;
 
                 case (char)ConsoleKey.Escape:

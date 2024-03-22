@@ -72,11 +72,11 @@ namespace RideDiary.Commands
 
 
 
-            JObject result = await SaveFileHandler.SaveDataToFile(rideDiaryData);
+            JObject saveFileResult = await SaveFileHandler.SaveDataToFile(rideDiaryData);
 
-            if (result.ContainsKey("error"))
+            if (saveFileResult.ContainsKey("error"))
             {
-                await DisplayUI.DisplayError($"                 {result["error"]}");
+                await DisplayUI.DisplayError($"                 {saveFileResult["error"]}");
                 return;
             }
 

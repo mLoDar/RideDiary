@@ -148,11 +148,11 @@ namespace RideDiary.Commands
 
 
 
-            JObject result = await SaveFileHandler.SaveDataToFile(rideDiaryData);
+            JObject saveFileResult = await SaveFileHandler.SaveDataToFile(rideDiaryData);
 
-            if (result.ContainsKey("error"))
+            if (saveFileResult.ContainsKey("error"))
             {
-                await DisplayUI.DisplayError($"                 {result["error"]}");
+                await DisplayUI.DisplayError($"                 {saveFileResult["error"]}");
                 return;
             }
 
@@ -361,7 +361,7 @@ namespace RideDiary.Commands
             string refuel_AmountEuro = Console.ReadLine() ?? string.Empty;
             refuel_AmountEuro = refuel_AmountEuro.Replace("€", string.Empty);
 
-            if (decimal.TryParse(refuel_AmountEuro, out decimal expense_Euro_Final) == false)
+            if (decimal.TryParse(refuel_AmountEuro, out decimal parsed_AmountEuro) == false)
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -405,7 +405,7 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.Cyan;
             string refuel_Liter = Console.ReadLine() ?? string.Empty;
 
-            if (decimal.TryParse(refuel_Liter, out decimal refuel_Liter_Final) == false)
+            if (decimal.TryParse(refuel_Liter, out decimal parsed_Liters) == false)
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -422,8 +422,8 @@ namespace RideDiary.Commands
                 new JObject()
                 {
                     ["Refuel_Date"] = refuel_Date,
-                    ["Refuel_AmountEuro"] = expense_Euro_Final,
-                    ["Refuel_Liter"] = refuel_Liter_Final
+                    ["Refuel_AmountEuro"] = parsed_AmountEuro,
+                    ["Refuel_Liter"] = parsed_Liters
                 }
             );
 
@@ -456,7 +456,7 @@ namespace RideDiary.Commands
             string expenses_AmountEuro = Console.ReadLine() ?? string.Empty;
             expenses_AmountEuro = expenses_AmountEuro.Replace("€", string.Empty);
 
-            if (decimal.TryParse(expenses_AmountEuro, out decimal expense_Euro_Final) == false)
+            if (decimal.TryParse(expenses_AmountEuro, out decimal parsed_AmountEuro) == false)
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -517,7 +517,7 @@ namespace RideDiary.Commands
                 new JObject()
                 {
                     ["Expenses_Date"] = expenses_Date,
-                    ["Expenses_AmountEuro"] = expense_Euro_Final,
+                    ["Expenses_AmountEuro"] = parsed_AmountEuro,
                     ["Expenses_Description"] = expenses_Description
                 }
             );

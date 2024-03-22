@@ -29,14 +29,9 @@ definetly later on : )
 
 <p align="center">
     <img style='height: 90%; width: 90%;' alt="RootMenu" src="readme-files/RootMenu.PNG"/>
-</p>
-
-<p align="center">
     <img style='height: 90%; width: 90%;' alt="AddPlate" src="readme-files/AddPlate.PNG"/>
-</p>
-
-<p align="center">
     <img style='height: 90%; width: 90%;' alt="DisplayPlateData" src="readme-files/DisplayPlateData.PNG"/>
+    <img style='height: 90%; width: 90%;' alt="DisplayPlateData" src="readme-files/DisplayTripData.PNG"/>
 </p>
 
 <br>

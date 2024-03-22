@@ -116,9 +116,9 @@ namespace RideDiary.Commands
         LabelDisplayMainData:
 
             DisplayData_Main(plateProperty, car_Maker, car_Model, plate_Trips, plate_Refuels, plate_Expenses);
+
+
             
-
-
         LabelKeyRead:
 
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -127,14 +127,17 @@ namespace RideDiary.Commands
             switch (pressedKey)
             {
                 case '1':
+                    Console.Title = $"RideDiary | Displaying trip data for {plateProperty.Name}";
                     DisplayData_Trips(plate_Trips);
                     goto LabelDisplayMainData;
 
                 case '2':
+                    Console.Title = $"RideDiary | Displaying expenses data for {plateProperty.Name}";
                     DisplayData_Refuels(plate_Refuels);
                     goto LabelDisplayMainData;
 
                 case '3':
+                    Console.Title = $"RideDiary | Displaying refueling for {plateProperty.Name}";
                     DisplayData_Expenses(plate_Expenses);
                     goto LabelDisplayMainData;
 
@@ -299,7 +302,6 @@ namespace RideDiary.Commands
             
         LabelDisplayPage:
             
-            Console.Title = "RideDiary | Displaying trip data";
             DisplayUI.ResetConsole();
             Console.ForegroundColor = ConsoleColor.White;
 
@@ -461,7 +463,6 @@ namespace RideDiary.Commands
             
         LabelDisplayPage:
 
-            Console.Title = "RideDiary | Displaying expenses data";
             DisplayUI.ResetConsole();
             Console.ForegroundColor = ConsoleColor.White;
 
@@ -616,7 +617,6 @@ namespace RideDiary.Commands
 
         LabelDisplayPage:
 
-            Console.Title = "RideDiary | Displaying expenses data";
             DisplayUI.ResetConsole();
             Console.ForegroundColor = ConsoleColor.White;
 

@@ -106,7 +106,8 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 ");
             Console.WriteLine("                 [1] New trip");
-            Console.WriteLine("                 [2] New expenses");
+            Console.WriteLine("                 [2] New refuel");
+            Console.WriteLine("                 [3] New expenses");
             Console.WriteLine("                 ");
             Console.Write("                 > ");
 
@@ -123,6 +124,10 @@ namespace RideDiary.Commands
                     break;
 
                 case '2':
+                    selectedPlate = AddNewRefuel(selectedPlate, plateProperty.Name);
+                    break;
+
+                case '3':
                     selectedPlate = AddNewExpenses(selectedPlate, plateProperty.Name);
                     break;
 
@@ -168,7 +173,7 @@ namespace RideDiary.Commands
             Console.WriteLine("                 ");
             Console.WriteLine("                 ");
 
-            await Task.Delay(3000);
+            await Task.Delay(2000);
         }
 
         private static void LoadDataFromFile()
@@ -319,6 +324,95 @@ namespace RideDiary.Commands
             return plateToAddDataTo;
         }
 
+        private static JObject AddNewRefuel(JObject plateToAddDataTo, string numberPlate)
+        {
+            Console.Title = "RideDiary | Add new refuel to plate";
+            DisplayUI.ResetConsole();
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("                 ENTER INFORMATION");
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("                 _________________");
+            Console.WriteLine("                 ");
+
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("                 Enter the amount paid in Euro");
+        LabelReadEuro:
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("                 > ");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            string refuel_AmountEuro = Console.ReadLine() ?? string.Empty;
+            refuel_AmountEuro = refuel_AmountEuro.Replace("€", string.Empty);
+
+            if (decimal.TryParse(refuel_AmountEuro, out decimal expense_Euro_Final) == false)
+            {
+                Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+
+                DisplayUI.ClearLine();
+
+                goto LabelReadEuro;
+            }
+
+
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("                 Enter the date of the refuel (format: day.month.year)");
+        LabelReadDate:
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("                 > ");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            string refuel_Date = Console.ReadLine() ?? string.Empty;
+
+            if (DateTime.TryParseExact(refuel_Date, "dd.MM.yyyy", null, DateTimeStyles.None, out _) == false)
+            {
+                Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+
+                DisplayUI.ClearLine();
+
+                goto LabelReadDate;
+            }
+
+
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("                 Enter the amount of liters of fuel");
+        LabelReadLiters:
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("                 > ");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            string refuel_Liter = Console.ReadLine() ?? string.Empty;
+
+            if (decimal.TryParse(refuel_Liter, out decimal refuel_Liter_Final) == false)
+            {
+                Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+
+                DisplayUI.ClearLine();
+
+                goto LabelReadLiters;
+            }
+
+
+
+            JArray collection_Expenses = plateToAddDataTo[numberPlate]?["Collection_Refuels"] as JArray ?? new JArray();
+
+            collection_Expenses.Add(
+                new JObject()
+                {
+                    ["Refuel_Date"] = refuel_Date,
+                    ["Refuel_AmountEuro"] = expense_Euro_Final,
+                    ["Refuel_Liter"] = refuel_Liter_Final
+                }
+            );
+
+            plateToAddDataTo[numberPlate]["Collection_Refuels"] = collection_Expenses;
+            return plateToAddDataTo;
+        }
+
         private static JObject AddNewExpenses(JObject plateToAddDataTo, string numberPlate)
         {
             Console.Title = "RideDiary | Add new expense to plate";
@@ -334,7 +428,7 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 Enter the amount of the expense in Euro");
-        LabelReadKilometersStart:
+        LabelReadEuro:
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");
 
@@ -348,7 +442,7 @@ namespace RideDiary.Commands
 
                 DisplayUI.ClearLine();
 
-                goto LabelReadKilometersStart;
+                goto LabelReadEuro;
             }
 
 

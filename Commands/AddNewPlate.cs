@@ -58,6 +58,7 @@ namespace RideDiary.Commands
                     ["Car_Maker"] = car_Maker,
                     ["Car_Model"] = car_Model,
                     ["Collection_Trips"] = new JArray(),
+                    ["Collection_Refuels"] = new JArray(),
                     ["Collection_Expenses"] = new JArray()
                 }
             };

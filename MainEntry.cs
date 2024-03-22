@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using RideDiary.Scripts;
 using RideDiary.Commands;
@@ -11,12 +12,12 @@ namespace RideDiary
 {
     internal class MainEntry
     {
-        internal static void Main()
+        internal static async Task Main()
         {
         LabelMethodBeginning:
 
             Console.Title = "RideDiary | Root";
-            DisplayUI.RootMenu();
+            await DisplayUI.RootMenu();
 
 
 
@@ -26,19 +27,19 @@ namespace RideDiary
             switch (pressedKey)
             {
                 case '1':
-                    AddNewPlate.Start();
+                    await AddNewPlate.Start();
                     break;
 
                 case '2':
-                    AddDataToPlate.Start();
+                    await AddDataToPlate.Start();
                     break;
 
                 case '3':
-                    ViewDataForPlate.Start();
+                    await ViewDataForPlate.Start();
                     break;
 
                 case '4':
-                    ShowStatistics.Start();
+                    await ShowStatistics.Start();
                     break;
 
                 case (char)ConsoleKey.Escape:

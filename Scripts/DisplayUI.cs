@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 
 
@@ -8,7 +9,7 @@ namespace RideDiary.Scripts
 {
     internal class DisplayUI
     {
-        internal static void RootMenu()
+        internal static async Task RootMenu()
         {
             ResetUI();
 

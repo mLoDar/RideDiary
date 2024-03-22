@@ -243,7 +243,7 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.Cyan;
             string trip_KilometersStart = Console.ReadLine() ?? string.Empty;
 
-            if (int.TryParse(trip_KilometersStart, out _) == false)
+            if (int.TryParse(trip_KilometersStart, out int parsed_KilometersStart) == false)
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -265,7 +265,7 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.Cyan;
             string trip_KilometersEnd = Console.ReadLine() ?? string.Empty;
 
-            if (int.TryParse(trip_KilometersEnd, out int result) == false || result < Convert.ToInt32(trip_KilometersStart))
+            if (int.TryParse(trip_KilometersEnd, out int parsed_KilometersEnd) == false || parsed_KilometersEnd < parsed_KilometersStart)
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -325,8 +325,8 @@ namespace RideDiary.Commands
             collection_Trips.Add(
                 new JObject()
                 {
-                    ["Trip_KilometersStart"] = trip_KilometersStart,
-                    ["Trip_KilometersEnd"] = trip_KilometersEnd,
+                    ["Trip_KilometersStart"] = parsed_KilometersStart,
+                    ["Trip_KilometersEnd"] = parsed_KilometersEnd,
                     ["Trip_Date"] = trip_Date,
                     ["Trip_Description"] = trip_Description
                 }
@@ -456,7 +456,7 @@ namespace RideDiary.Commands
             string expenses_AmountEuro = Console.ReadLine() ?? string.Empty;
             expenses_AmountEuro = expenses_AmountEuro.Replace("€", string.Empty);
 
-            if (decimal.TryParse(expenses_AmountEuro, out _) == false)
+            if (decimal.TryParse(expenses_AmountEuro, out decimal expense_Euro_Final) == false)
             {
                 Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
 
@@ -517,7 +517,7 @@ namespace RideDiary.Commands
                 new JObject()
                 {
                     ["Expenses_Date"] = expenses_Date,
-                    ["Expenses_AmountEuro"] = expenses_AmountEuro,
+                    ["Expenses_AmountEuro"] = expense_Euro_Final,
                     ["Expenses_Description"] = expenses_Description
                 }
             );

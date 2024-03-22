@@ -84,7 +84,20 @@ namespace RideDiary.Commands
             DisplayUI.ResetConsole();
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("                 The new plate was added");
+            Console.WriteLine("                  ___________________________");
+            Console.WriteLine("                 |                           |");
+
+            Console.Write("                 |  ");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("The new plate was added");
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("  |");
+            Console.WriteLine("                 |___________________________|");
+            Console.WriteLine("                 ");
+            Console.WriteLine("                 ");
+
             await Task.Delay(3000);
         }
 
@@ -140,7 +153,7 @@ namespace RideDiary.Commands
             Console.WriteLine("                 _________________");
             
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine();
+            Console.WriteLine("                 ");
             Console.Write("                 Enter the car's plate: ");
 
 

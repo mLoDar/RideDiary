@@ -63,14 +63,14 @@ namespace RideDiary.Commands
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"                 ");
-            Console.WriteLine($"                 Enter the number of the number plate whose data should be displayed");
+            Console.WriteLine("                 ");
+            Console.WriteLine("                 Enter the number of the number plate whose data should be displayed");
 
 
 
         LabelNumberInput:
 
-            Console.Write($"                 > ");
+            Console.Write("                 > ");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             string enteredNumber = Console.ReadLine() ?? string.Empty;
@@ -92,7 +92,7 @@ namespace RideDiary.Commands
 
             if (plateProperty == null)
             {
-                await DisplayUI.DisplayError($"                 An unexpected error appeared, please try again");
+                await DisplayUI.DisplayError("                 An unexpected error appeared, please try again");
                 return;
             }
 
@@ -103,7 +103,7 @@ namespace RideDiary.Commands
 
             if (car_Maker == null || car_Model == null)
             {
-                await DisplayUI.DisplayError($"                 An unexpected error appeared, please try again");
+                await DisplayUI.DisplayError("                 An unexpected error appeared, please try again");
                 return;
             }
 
@@ -224,7 +224,7 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 [3] Return to number plate selection");
             Console.WriteLine("                 ");
-            Console.Write($"                 > ");
+            Console.Write("                 > ");
         }
 
         private static void DisplayData_Trips(JArray plate_Trips)
@@ -316,35 +316,35 @@ namespace RideDiary.Commands
                 }
             }
 
-            Console.WriteLine($"                 ");
+            Console.WriteLine("                 ");
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"                 ______________________");
+            Console.WriteLine("                 ______________________");
             Console.ForegroundColor = ConsoleColor.White;
 
             if (currentPageIndex - 1 >= 0)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write($"                 <-");
+                Console.Write("                 <-");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write($" previuos page   ");
+                Console.Write(" previuos page   ");
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"(A)");
+                Console.WriteLine("(A)");
             }
             
             if (currentPageIndex + 1 <= trip_Pages.GetLength(0) - 1)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write($"                 (D)");
+                Console.Write("                 (D)");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write($"       next page ");
+                Console.Write("       next page ");
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"->");
+                Console.WriteLine("->");
             }
             
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"                 __________");
+            Console.WriteLine("                 __________");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"                 [ESC] Exit");
+            Console.WriteLine("                 [ESC] Exit");
             Console.WriteLine("                 ");
             Console.Write("                 > ");
 
@@ -462,35 +462,35 @@ namespace RideDiary.Commands
                 }
             }
 
-            Console.WriteLine($"                 ");
+            Console.WriteLine("                 ");
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"                 ______________________");
+            Console.WriteLine("                 ______________________");
             Console.ForegroundColor = ConsoleColor.White;
 
             if (currentPageIndex - 1 >= 0)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write($"                 <-");
+                Console.Write("                 <-");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write($" previuos page   ");
+                Console.Write(" previuos page   ");
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"(A)");
+                Console.WriteLine("(A)");
             }
 
             if (currentPageIndex + 1 <= expense_Pages.GetLength(0) - 1)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write($"                 (D)");
+                Console.Write("                 (D)");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write($"       next page ");
+                Console.Write("       next page ");
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"->");
+                Console.WriteLine("->");
             }
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"                 __________");
+            Console.WriteLine("                 __________");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"                 [ESC] Exit");
+            Console.WriteLine("                 [ESC] Exit");
             Console.WriteLine("                 ");
             Console.Write("                 > ");
 

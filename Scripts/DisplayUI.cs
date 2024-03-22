@@ -56,8 +56,8 @@ namespace RideDiary.Scripts
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("                 ");
             Console.WriteLine("                 [5] Show Statistics");
-
-            Console.Write("                 ");
+            Console.WriteLine("                 ");
+            Console.Write("                 > ");
         }
 
         internal static void ResetConsole()

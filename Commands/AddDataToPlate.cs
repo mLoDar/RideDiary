@@ -60,14 +60,14 @@ namespace RideDiary.Commands
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"                 ");
-            Console.WriteLine($"                 Enter the number of the plate to add data to");
+            Console.WriteLine("                 ");
+            Console.WriteLine("                 Enter the number of the plate to add data to");
 
 
 
         LabelNumberInput:
 
-            Console.Write($"                 > ");
+            Console.Write("                 > ");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             string enteredNumber = Console.ReadLine() ?? string.Empty;
@@ -89,7 +89,7 @@ namespace RideDiary.Commands
 
             if (plateProperty == null)
             {
-                await DisplayUI.DisplayError($"                 An unexpected error appeared, please try again");
+                await DisplayUI.DisplayError("                 An unexpected error appeared, please try again");
                 return;
             }
 
@@ -154,7 +154,20 @@ namespace RideDiary.Commands
             DisplayUI.ResetConsole();
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("                 Successfully added data to the selected plate");
+            Console.WriteLine("                  _________________________________________________");
+            Console.WriteLine("                 |                                                 |");
+
+            Console.Write("                 |  ");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("Successfully added data to the selected plate");
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("  |");
+            Console.WriteLine("                 |_________________________________________________|");
+            Console.WriteLine("                 ");
+            Console.WriteLine("                 ");
+
             await Task.Delay(3000);
         }
 
@@ -207,7 +220,7 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("                 _________________");
-            Console.WriteLine();
+            Console.WriteLine("                 ");
 
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -316,7 +329,7 @@ namespace RideDiary.Commands
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("                 _________________");
-            Console.WriteLine();
+            Console.WriteLine("                 ");
 
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -341,7 +354,7 @@ namespace RideDiary.Commands
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("                 Enter the date of the expenses");
+            Console.WriteLine("                 Enter the date of the expenses (format: day.month.year)");
         LabelReadDate:
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("                 > ");

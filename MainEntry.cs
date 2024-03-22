@@ -14,18 +14,17 @@ namespace RideDiary
     {
         internal static async Task Main()
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-
-
         LabelMethodBeginning:
 
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = "RideDiary | Root";
+
             await DisplayUI.RootMenu();
 
 
 
         LabelKeyRead:
+
             char pressedKey = Console.ReadKey(true).KeyChar;
 
             switch (pressedKey)

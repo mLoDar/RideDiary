@@ -23,8 +23,12 @@ namespace RideDiary.Commands
 
         internal static async Task Start()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = "RideDiary | Add new number plate";
+
             DisplayUI.ResetConsole();
+
+
 
             LoadDataFromFile();
 

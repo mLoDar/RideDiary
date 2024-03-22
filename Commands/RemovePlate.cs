@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using RideDiary.Scripts;
-using RideDiary.Resources;
 
 using Newtonsoft.Json.Linq;
 
@@ -25,8 +24,12 @@ namespace RideDiary.Commands
         {
         LabelMethodBeginning:
 
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = "RideDiary | Remove added number plate";
+
             DisplayUI.ResetConsole();
+
+
 
             LoadDataFromFile();
 
@@ -54,6 +57,7 @@ namespace RideDiary.Commands
                 await DisplayUI.DisplayError("                 No number plates have been added yet");
                 return;
             }
+
 
 
             NumberPlateExtras.DisplayNumberPlates(numberPlates);
@@ -98,9 +102,9 @@ namespace RideDiary.Commands
 
             DisplayUI.ResetConsole();
 
-
-
             DisplayConfirmationMenu(plateToRemove, plateProperty);
+
+
 
         LabelKeyRead:
 
@@ -152,8 +156,6 @@ namespace RideDiary.Commands
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("  |");
             Console.WriteLine("                 |___________________________________________|");
-
-
 
             await Task.Delay(2000);
         }

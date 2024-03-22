@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Threading.Tasks;
 
 using RideDiary.Scripts;
-using RideDiary.Resources;
 
 using Newtonsoft.Json.Linq;
 
@@ -26,8 +25,12 @@ namespace RideDiary.Commands
         {
         LabelMethodBeginnging:
 
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = "RideDiary | Displaying data of plate";
+
             DisplayUI.ResetConsole();
+
+
 
             LoadDataFromFile();
 
@@ -151,7 +154,6 @@ namespace RideDiary.Commands
                 default:
                     goto LabelKeyRead;
             }
-
         }
 
         private static void LoadDataFromFile()
@@ -195,7 +197,11 @@ namespace RideDiary.Commands
 
         private static void DisplayData_Main(JProperty plateProperty, JToken car_Maker, JToken car_Model, JArray plate_Trips, JArray plate_Refuels, JArray plate_Expenses)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = $"RideDiary | Data of {plateProperty.Name}";
+
+
+
             DisplayUI.ResetConsole();
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -436,10 +442,10 @@ namespace RideDiary.Commands
 
             foreach (JObject refuel in plate_Refuels.Cast<JObject>())
             {
-                decimal.TryParse(Convert.ToString(refuel["Refuel_PaidInEuro"]).Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuel_AmountEuro);
+                decimal.TryParse(Convert.ToString(refuel["Refuel_PaidInEuro"])?.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuel_AmountEuro);
                 string refuelEuro_Formatted = string.Format("{0:F2}", refuel_AmountEuro);
 
-                decimal.TryParse(Convert.ToString(refuel["Refuel_AmountAsLiter"]).Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuel_Liter);
+                decimal.TryParse(Convert.ToString(refuel["Refuel_AmountAsLiter"])?.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal refuel_Liter);
                 string refuelLiter_Formatted = string.Format("{0:F2}", refuel_Liter);
 
                 string refuel_CombinedInformation = $"{refuel["Refuel_Date"]} | {refuelEuro_Formatted.PadRight(lengthHelperEuro)} € | {refuelLiter_Formatted.PadRight(lengthHelperEuro)} Liters";
@@ -593,7 +599,7 @@ namespace RideDiary.Commands
 
             foreach (JObject expense in plate_Expenses.Cast<JObject>())
             {
-                decimal.TryParse(Convert.ToString(expense["Expense_PaidInEuro"]).Replace(',','.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal expense_AmountEuro);
+                decimal.TryParse(Convert.ToString(expense["Expense_PaidInEuro"])?.Replace(',','.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal expense_AmountEuro);
                 string expense_Formatted = string.Format("{0:F2}", expense_AmountEuro);
 
                 string expense_CombinedInformation = $"{expense["Expense_Date"]} | {expense_Formatted.PadLeft(lengthHelper)} € | {expense["Expense_Description"]}";

@@ -24,8 +24,12 @@ namespace RideDiary.Commands
 
         internal static async Task Start()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = "RideDiary | Add data to plate";
+
             DisplayUI.ResetConsole();
+
+
 
             LoadDataFromFile();
 
@@ -221,7 +225,11 @@ namespace RideDiary.Commands
 
         private static JObject AddNewTrip(JObject plateToAddDataTo, string numberPlate)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = "RideDiary | Add new trip to plate";
+
+
+
             DisplayUI.ResetConsole();
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -346,7 +354,11 @@ namespace RideDiary.Commands
 
         private static JObject AddNewRefuel(JObject plateToAddDataTo, string numberPlate)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = "RideDiary | Add new refuel to plate";
+
+
+
             DisplayUI.ResetConsole();
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -449,7 +461,11 @@ namespace RideDiary.Commands
 
         private static JObject AddNewExpenses(JObject plateToAddDataTo, string numberPlate)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = "RideDiary | Add new expense to plate";
+
+
+
             DisplayUI.ResetConsole();
 
             Console.ForegroundColor = ConsoleColor.White;

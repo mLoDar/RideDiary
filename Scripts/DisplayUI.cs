@@ -64,5 +64,22 @@ namespace RideDiary.Scripts
             Console.Clear();
             Console.SetCursorPosition(0, 5);
         }
+
+        internal static async Task DisplayError(string errorMessage)
+        {
+            ResetConsole();
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(errorMessage);
+
+            await Task.Delay(3000);
+        }
+
+        internal static void ClearLine()
+        {
+            Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
+            Console.Write("\r" + new string(' ', Console.BufferWidth) + "\r");
+            Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
+        }
     }
 }
